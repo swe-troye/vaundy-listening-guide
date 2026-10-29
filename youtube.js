@@ -106,7 +106,13 @@
     document.title=`${s.name} · YouTube 同步聆聽`;$('youtube-open').href=v.source;
     $('previous').disabled=index===0;$('next').disabled=index===songs.length-1;
     $('sources').innerHTML=`<p><strong>影片：</strong>${e(v.title)}</p><p><strong>頻道：</strong>${e(v.channel)} · ${e(v.checkedAt)} 核對</p><p><a href="${e(v.source)}" target="_blank" rel="noopener noreferrer">官方 YouTube 影片 ↗</a></p><p>內建文字來自本站原創中文導聆；時間配置為閱讀提示。你匯入的 LRC 應對應這支影片，MV 的前奏、尾聲可能和串流錄音不同。</p>`;
-    $('marumaru-link').href=s.sources.find(x=>x.kind==='translation'&&x.url.includes('marumaru'))?.url||'https://www.marumaru-x.com/';
+    const marumaru=s.sources.find(x=>x.url.includes('marumaru'));
+    const original=s.sources.find(x=>x.kind==='original');
+    $('marumaru-link').href=marumaru?.url||'https://www.marumaru-x.com/';
+    $('lyrics-source-link').href=marumaru?.url||original.url;
+    $('lyrics-source-link').textContent=marumaru?'在 marumaru 查看日文歌詞與中文翻譯 ↗':`日文原文：${original.name} ↗`;
+    $('lyrics-source-credit').textContent=marumaru?`歌詞／中文對照參考：marumaru${marumaru.credit?`；${marumaru.credit}`:'；翻譯署名請見原始頁。'}`:'這首尚未取得完整外部中文翻譯。';
+    $('lyrics-source-note').textContent=`逐句內容請至來源頁閱讀。本頁顯示原創導聆提示，或你匯入的 LRC。${s.id==='kaiju'?'此歌詞對照頁使用原曲，YouTube 播放為 replica 版。':''}`;
     clearLoop();restoreLRC();songList();setFollowing(true);$('time').textContent='00:00';$('duration').textContent='--:--';
   }
   function select(next) {

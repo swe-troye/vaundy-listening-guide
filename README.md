@@ -89,3 +89,6 @@ VAUNDY_BROWSER=webkit node scripts/youtube-live-check.cjs
 ```
 
 本機伺服器使用 `npm start`；開啟 http://localhost:4174/youtube.html 。YouTube iframe需要HTTP來源與referrer，請勿以本機file網址測試。建置會複製实验版5個資產，舊兩份可攜HTML維持原用途。YouTube API不需要本站帳號或API Key。
+
+
+同步文字區上方另列每首marumaru原始頁連結與已核對的翻譯署名，直接前往閱讀逐句日文與中文。23首有對應來源（含気まぐれ的原文／中譯頁）；soramimi改列已核對的日文原文來源，明確說明尚缺完整外部中譯。怪獣の花唄另註明對照頁為原曲、播放器為replica版。來源標示不表示本站預置或取得完整歌詞授權。

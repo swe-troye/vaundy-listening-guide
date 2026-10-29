@@ -38,3 +38,6 @@ Spotify使用官方createController/loadEntity/play/pause與事件。初次按�
 支援seek、follow-scroll、single-line/AB loop、speed、font-size、offset、歌單搜尋與深連結。單句循環固定loopCue，避免越過下一句邊界後跟著activeIndex跑掉。播放時間實際前進才標播放中，YouTube onAutoplayBlocked有提示；15s連線逾時保留直接YouTube連結。YouTube需要HTTP referrer，local file不適用。
 
 測試：npm test11項；youtube-browser-check.cjs使用受控YTfixture，15項UI與版面通過；真正YouTube在Edge與WebKit iPhone模式已確認首曲播放與換首時間前進。youtube-live-check.cjs保存真實影片、匯入LRC與seek檢查，與fixture測試分開。新data僅含影片metadata，research/仍禁止提交，未帶任何lyrics全文、tokens或session內容。
+
+
+marumaru credit更新：youtube同步區上方增加lyrics-source-link/credit/note，23首連到原站日中對照頁並顯示翻譯署名；soramimi連已核對原文並保留中文缺資料說明。気まぐれ來源kind是original，依marumaru URL取來源，已修正先前連到首頁的情況。怪獣の花唄註記原曲詞頁與replica影片版本差異。未複製原站完整歌詞或翻譯；credit與授權為不同事項。

@@ -4,8 +4,8 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#a23c68"><meta name="description" content="Vaundy YouTube 同步聆聽實驗版：影片、逐句跳播、循環練習與本機 LRC 歌詞。">
   <title>YouTube 同步聆聽 · Vaundy</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="youtube.css?v=lab-1">
-  <script src="data.js" defer></script><script src="core.js" defer></script><script src="youtube-data.js" defer></script><script src="youtube-core.js" defer></script><script src="youtube.js?v=lab-1" defer></script>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="youtube.css?v=lab-2">
+  <script src="data.js" defer></script><script src="core.js" defer></script><script src="youtube-data.js" defer></script><script src="youtube-core.js" defer></script><script src="youtube.js?v=lab-2" defer></script>
 </head>
 <body>
   <a class="skip" href="#timeline">跳到同步文字</a>
@@ -25,6 +25,7 @@
       <section class="text-column" aria-labelledby="text-title">
         <div class="text-heading"><div><h2 id="text-title">同步文字</h2><p id="content-kind">原創導聆提示 · 非逐句歌詞</p></div><button id="import-open" class="import-button" type="button">匯入 LRC</button><input id="lrc-file" type="file" accept=".lrc,.txt,text/plain" class="sr-only" tabindex="-1" aria-label="匯入歌詞時間軸"></div>
         <div class="text-toolbar"><button id="follow" type="button" aria-pressed="true">跟隨播放</button><button id="translation" type="button" aria-pressed="true">顯示第二行</button><label>字級<select id="font-size"><option value="small">小</option><option value="medium" selected>中</option><option value="large">大</option></select></label></div>
+        <div class="lyrics-source"><a id="lyrics-source-link" href="https://www.marumaru-x.com/japanese-song/play-y8rj989dn9" target="_blank" rel="noopener noreferrer">在 marumaru 查看日文歌詞與中文翻譯 ↗</a><p id="lyrics-source-credit"></p><p id="lyrics-source-note">逐句內容請至來源頁閱讀。本頁顯示原創導聆提示，或你匯入的 LRC。</p></div>
         <p id="timeline-hint" class="timeline-hint">點文字跳到影片的位置。匯入帶時間標記的 LRC，即可逐句高亮；同一時間的第二行可放中文。</p>
         <div id="timeline" class="timeline" tabindex="0" aria-label="同步文字，點句子可跳播"></div>
         <div class="timeline-bottom"><button id="return-current" type="button" hidden>回到正在播放的一句 ↓</button><p id="sync-status" role="status"></p></div>

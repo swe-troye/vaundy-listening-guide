@@ -100,3 +100,6 @@
 - 互動參考：https://www.marumaru-x.com/japanese-song/play-y8rj989dn9 。僅研究播放／文字同步、翻譯開關與練習操作，未將整份歌詞、翻譯或網站程式碼加入新頁面。
 - 內建同步文字：本站data.js的原創line、titleMeaning、meaning、listen與prompt，段落时间为閱讀提示，不是逐句唱詞時間。
 - 逐句歌詞：使用者在瀏覽器自行匯入的LRC，按官方影片ID儲存於該瀏覽器；本站不預置或發布整份外部歌詞。測試使用自寫的簡短測試提示。
+
+
+實驗版同步區的來源標示：23首顯示marumaru對應原始頁及已記錄的翻譯署名，気まぐれ依來源URL識別、不要求kind為translation；soramimi顯示原文來源與未取得完整外部中譯的說明。這些連結供直接閱讀原站，本站同步區仍為原創提示／使用者本機LRC。
