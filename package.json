@@ -8,6 +8,6 @@
     "start": "node scripts/serve.cjs",
     "preview": "node scripts/serve.cjs dist",
     "build": "node scripts/build.cjs",
-    "test": "node --test scripts/core.test.cjs"
+    "test": "node --test scripts/*.test.cjs"
   }
 }

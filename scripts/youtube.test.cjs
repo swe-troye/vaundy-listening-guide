@@ -1,0 +1,25 @@
+'use strict';
+const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),path=require('node:path');
+const {parseLRC,activeIndex,formatTime}=require('../youtube-core.js');
+test('LRC parsing keeps bilingual lines, repeated timestamps, fractions and BOM',()=>{
+ const cues=parseLRC('\uFEFF[ar:本機測試]\n[00:01.5]第一句提示\n[00:01.50]First note\n[00:03.125][00:06.00]第二句提示\n[00:08.00]\n');
+ assert.deepEqual(cues,[{start:1.5,primary:'第一句提示',secondary:'First note'},{start:3.125,primary:'第二句提示',secondary:''},{start:6,primary:'第二句提示',secondary:''}]);
+});
+test('LRC sorting, offset and hostile markup are treated as plain text',()=>{
+ const cues=parseLRC('[offset:-500]\n[00:05.00]後段提示\n[00:02.00]<img src=x onerror=alert(1)>');
+ assert.equal(cues[0].start,1.5);assert.equal(cues[0].primary,'<img src=x onerror=alert(1)>');assert.equal(cues[1].start,4.5);
+ assert.throws(()=>parseLRC('[offset:'+'9'.repeat(400)+']\n[00:00]文字'),/偏移/);
+});
+test('bad or oversized LRC fails without inventing timing',()=>{
+ assert.throws(()=>parseLRC('沒有時間軸'),/時間標記/);assert.throws(()=>parseLRC('x'.repeat(512001)),/太大/);assert.throws(()=>parseLRC('[00:99]無效秒數'),/時間標記/);
+});
+test('active cue uses timestamp boundaries, seek-back and user offset',()=>{
+ const cues=parseLRC('[00:02]提示一\n[00:06]提示二\n[00:10]提示三');
+ assert.equal(activeIndex(cues,1),-1);assert.equal(activeIndex(cues,6),1);assert.equal(activeIndex(cues,3),0);assert.equal(activeIndex(cues,6,1),0);assert.equal(activeIndex(cues,12),2);assert.equal(activeIndex([],8),-1);assert.equal(formatTime(125.7),'02:05');
+});
+test('all 24 official video IDs are verified and preserve replica recordings',()=>{
+ const ctx={window:{}};for(const file of ['data.js','youtube-data.js'])vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8'),ctx);
+ const songs=ctx.window.VAUNDY_SONGS, videos=ctx.window.VAUNDY_VIDEOS;
+ assert.equal(Object.keys(videos).length,24);for(const song of songs){const v=videos[song.id];assert.match(v.videoId,/^[A-Za-z0-9_-]{11}$/);assert.match(v.channel,/^Vaundy/);assert.equal(v.source,'https://www.youtube.com/watch?v='+v.videoId);}
+ assert.match(videos.gyakko.title,/replica/);assert.match(videos.kaiju.title,/replica/);
+});

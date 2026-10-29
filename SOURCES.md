@@ -91,3 +91,12 @@
 ## iPhone 試聽連播來源
 
 24首公開預覽取自使用者提供的Spotify歌單embed的audioPreview欄位，依playlist-snapshot.json的曲目ID逐一對應。安全過濾後的URL見previews.js，僅含p.scdn.co/mp3-preview音訊路徑，不含token、client credentials或URL query。2026/10/29逐一核對24個來源均回傳audio/mpeg。網站播放公開試聽片段，完整歌曲由每首Spotify連結開啟。播放器現行方式見README「自動播放（iPhone修正）」；先前iFrame API為歷史版本。
+
+
+## YouTube 同步實驗版來源
+
+- 官方影片URL、標題、頻道與核對日期：youtube-data.js。24首依本站歌單對應，官方MV或Vaundy - Topic錄音；兩首replica採對應錄音。2026/10/29逐一以YouTube oEmbed核對，不將oEmbed成功視為所有地區均可嵌入。
+- YouTube iframe API：https://developers.google.com/youtube/iframe_api_reference 。使用playsinline、原生controls、字幕設定及播放事件，保留完整官方播放器與直接影片連結。
+- 互動參考：https://www.marumaru-x.com/japanese-song/play-y8rj989dn9 。僅研究播放／文字同步、翻譯開關與練習操作，未將整份歌詞、翻譯或網站程式碼加入新頁面。
+- 內建同步文字：本站data.js的原創line、titleMeaning、meaning、listen與prompt，段落时间为閱讀提示，不是逐句唱詞時間。
+- 逐句歌詞：使用者在瀏覽器自行匯入的LRC，按官方影片ID儲存於該瀏覽器；本站不預置或發布整份外部歌詞。測試使用自寫的簡短測試提示。

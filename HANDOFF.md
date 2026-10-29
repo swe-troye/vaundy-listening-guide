@@ -29,3 +29,12 @@ Spotify使用官方createController/loadEntity/play/pause與事件。初次按�
 使用者回報下一首顯示播放但沒出聲，裝置為iPhone Edge。WebKit iPhone模式已重現前版Spotify iframe換歌卡緩衝，按鈕仍顯示暫停。player.js現已全面改用同一HTMLAudioElement，previews.js載入24首原歌單公開audioPreview.url，沒有Spotify iframe/API控制；約30秒試聽，不是完整歌曲。預覽URL只保留p.scdn.co/mp3-preview路徑，24首依曲目ID對應且HTTP音訊已驗證，未保存工作階段token或URL query。
 
 同步src/play保留首次手勢，timeupdate前進才標播放中，pending表示載入、可取消；NotAllowedError、網路/解碼錯誤有提示。原生ended接下一首，暫停保留，開啟Spotify連結會停止試聽。所有錯誤提示在手機可見。測試以實際audio.currentTime/paused核對，已在WebKit iPhone模式確認整段播完接下一首；不是實體iPhone驗證。前面iFrame API筆記僅為舊版歷史，勿恢復為現行實作。
+
+
+## YouTube 同步實驗版（獨立路徑）
+
+使用者要求先做另一網址、從YouTube播放、致敬marumaru操作。新增youtube.html/css/js、youtube-core.js與youtube-data.js，網址為/youtube.html；不替換原native試聽頁或首頁入口。24支官方影片逐一oEmbed核對，两首replica對應錄音。未搬外部完整歌詞，內建6段原創導聆提示，UI清楚標非唱詞；LRC在瀏覽器本機匯入後可逐句同步與双行顯示，按videoID本機保存且可清除。
+
+支援seek、follow-scroll、single-line/AB loop、speed、font-size、offset、歌單搜尋與深連結。單句循環固定loopCue，避免越過下一句邊界後跟著activeIndex跑掉。播放時間實際前進才標播放中，YouTube onAutoplayBlocked有提示；15s連線逾時保留直接YouTube連結。YouTube需要HTTP referrer，local file不適用。
+
+測試：npm test11項；youtube-browser-check.cjs使用受控YTfixture，15項UI與版面通過；真正YouTube在Edge與WebKit iPhone模式已確認首曲播放與換首時間前進。youtube-live-check.cjs保存真實影片、匯入LRC與seek檢查，與fixture測試分開。新data僅含影片metadata，research/仍禁止提交，未帶任何lyrics全文、tokens或session內容。

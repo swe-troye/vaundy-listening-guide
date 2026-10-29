@@ -68,3 +68,24 @@ VAUNDY_BROWSER=webkit node scripts/playback-check.cjs
 ```
 
 檢查腳本使用 Playwright Core。Edge 走本機應用程式；WebKit可用 `PLAYWRIGHT_BROWSERS_PATH` 指定已安裝瀏覽器，本次下載在 `/private/tmp/vaundy-browsers`。測試以 `audio.currentTime` 前進和 `paused` 狀態核對，另模擬 `NotAllowedError` 及一直pending的播放要求，確認不會誤顯示播放中。
+
+
+## YouTube 同步聆聽實驗版
+
+獨立網址：https://swe-troye.github.io/vaundy-listening-guide/youtube.html 。這版不替換 `listen.html`，首頁也未加入實驗版入口。
+
+影片使用官方 YouTube iframe API 與24首 Vaundy／Vaundy - Topic影片，曲目 metadata 見 `youtube-data.js`，逐一透過 YouTube oEmbed 核對標題與頻道；〈逆光〉和〈怪獣の花唄〉皆選 replica 錄音。MV可能有額外前奏或尾聲，時間軸以該影片為準。嵌入播放仍依YouTube地區、影片設定與瀏覽器許可；錯誤時有直接YouTube連結。
+
+互動參考marumaru：逐句高亮、點句跳播、自動跟隨捲動、第二行文字切換、字級、速度、單句循環、A–B循環與時間偏移。影片透過 `getCurrentTime` 驅動同步，播放時間前進才標示播放中；首次播放及自動換歌若受阻，提示點影片的播放鍵。影片字幕使用YouTube原生字幕設定。
+
+**內建是原創中文導聆提示，非逐句歌詞。** 提示依影片段落配置，並不表示歌詞正唱到那一句。完整歌詞同步使用你可使用的LRC：點「匯入LRC」，選擇本機 `.lrc` 或 `.txt`；格式例如 `[00:12.50]文字`，同一時間的多行可放日文與中文。支援重複時間標記、LRC offset、影片個別存檔及清除。檔案最多500KB，在浏览器解析與保存，不上傳伺服器，也不對外發布。未複製marumaru的完整歌詞或翻譯。
+
+驗證：`npm test` 共11項通過；`node scripts/youtube-browser-check.cjs` 共15組受控API介面檢查，涵蓋匯入、重開恢復、跳播、同步、單句及A–B循環、播放受阻、XSS文字處理和手機／200%文字。另以真正YouTube測試桌面Edge與WebKit iPhone模式，確認影片時間前進及下一首播放；WebKit模式不是實體iPhone。
+
+```sh
+node scripts/youtube-browser-check.cjs
+node scripts/youtube-live-check.cjs
+VAUNDY_BROWSER=webkit node scripts/youtube-live-check.cjs
+```
+
+本機伺服器使用 `npm start`；開啟 http://localhost:4174/youtube.html 。YouTube iframe需要HTTP來源與referrer，請勿以本機file網址測試。建置會複製实验版5個資產，舊兩份可攜HTML維持原用途。YouTube API不需要本站帳號或API Key。

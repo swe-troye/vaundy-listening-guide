@@ -1,0 +1,46 @@
+'use strict';
+const assert=require('node:assert/strict'),path=require('node:path'),fs=require('node:fs');
+const {chromium}=require('/Users/troye/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core');
+const base=process.env.VAUNDY_SITE_URL||'http://localhost:4174/';
+const mock=String.raw`
+window.YT={Player:class {
+ constructor(id,options){this.options=options;this.videoId=options.videoId;this.state=5;this.time=0;this.rate=1;this.started=performance.now();this.calls=[];window.testPlayer=this;setTimeout(()=>options.events.onReady({target:this}),0);}
+ getVideoData(){return {video_id:this.videoId};}getDuration(){return 150;}getPlayerState(){return this.state;}isMuted(){return false;}
+ getCurrentTime(){return this.time+(this.state===1?(performance.now()-this.started)/1000*this.rate:0);}
+ setTime(t){this.time=t;this.started=performance.now();}
+ stateEvent(state){this.time=this.getCurrentTime();this.state=state;this.started=performance.now();this.options.events.onStateChange({data:state});}
+ playVideo(){if(this.block){this.state=5;this.options.events.onAutoplayBlocked();return;}this.stateEvent(1);}
+ pauseVideo(){this.stateEvent(2);}
+ seekTo(t){this.calls.push(['seek',t]);this.setTime(t);}
+ cueVideoById(id){this.videoId=id;this.setTime(0);this.stateEvent(5);this.calls.push(['cue',id]);}
+ loadVideoById(id){this.videoId=id;this.setTime(0);this.stateEvent(1);this.calls.push(['load',id]);}
+ setPlaybackRate(rate){this.time=this.getCurrentTime();this.started=performance.now();this.rate=rate;this.calls.push(['rate',rate]);}
+ }};window.onYouTubeIframeAPIReady();`;
+let passed=0;async function check(name,fn){await fn();console.log('PASS '+name);passed++;}
+(async()=>{
+const browser=await chromium.launch({executablePath:'/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',headless:true});
+try{
+ const context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
+ await context.route('https://www.youtube.com/iframe_api',r=>r.fulfill({contentType:'text/javascript',body:mock}));
+ const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(new URL('youtube.html#song-naki-jizo',base).href);
+ await page.waitForFunction(()=>!document.querySelector('#play').disabled);
+ await check('separate lab lists 24 exact videos and clearly identifies guide text',async()=>{assert.equal(await page.locator('.song-choice').count(),24);assert.match(await page.locator('#content-kind').innerText(),/非逐句歌詞/);assert.equal(await page.evaluate(()=>window.testPlayer.videoId),'XQTM2M5iD_I');});
+ await check('playback state waits for advancing time and supports pause',async()=>{await page.click('#play');await page.waitForFunction(()=>document.querySelector('#player-status').textContent.includes('影片播放中'));await page.click('#play');assert.match(await page.locator('#play').innerText(),/播放影片/);});
+ const lrc='[00:00]最初的閱讀提示\n[00:00]First note\n[00:02]第二段提示\n[00:02]Second note\n[00:04]第三段提示\n[00:06]最後一段提示';
+ await check('local LRC import groups bilingual text and survives reload',async()=>{await page.locator('#lrc-file').setInputFiles({name:'owned-test.lrc',mimeType:'text/plain',buffer:Buffer.from(lrc)});await page.waitForFunction(()=>document.querySelectorAll('.cue').length===4);assert.match(await page.locator('#content-kind').innerText(),/owned-test/);assert.equal(await page.locator('.cue-secondary').count(),2);await page.reload();await page.waitForFunction(()=>!document.querySelector('#play').disabled);assert.equal(await page.locator('.cue').count(),4);});
+ await check('clicking a line seeks and highlights the matching timestamp',async()=>{await page.locator('[data-cue="1"]').click();await page.waitForFunction(()=>document.querySelector('[data-cue="1"]').getAttribute('aria-current')==='true');assert.equal(await page.evaluate(()=>window.testPlayer.calls.at(-1)[1]),2);});
+ await check('translation, text size and positive timing offset operate independently',async()=>{await page.locator('.sync-settings > summary').click();await page.click('#translation');assert.ok(await page.locator('.timeline.hide-secondary').count());await page.selectOption('#font-size','large');assert.equal(await page.locator('#timeline').getAttribute('data-size'),'large');await page.locator('#offset').evaluate(el=>{el.value='2';el.dispatchEvent(new Event('input'));});await page.evaluate(()=>window.testPlayer.setTime(2.5));await page.waitForFunction(()=>document.querySelector('[data-cue="0"]').getAttribute('aria-current')==='true');assert.equal(await page.locator('#offset-value').innerText(),'2.0 秒');await page.click('#reset-offset');});
+ await check('single-line loop returns to its original line after crossing the next boundary',async()=>{await page.evaluate(()=>window.testPlayer.setTime(2.2));await page.waitForFunction(()=>document.querySelector('[data-cue="1"]').getAttribute('aria-current')==='true');await page.click('#loop-line');await page.click('#play');await page.evaluate(()=>window.testPlayer.setTime(4.1));await page.waitForFunction(()=>window.testPlayer.calls.some(c=>c[0]==='seek'&&c[1]===2));await page.waitForFunction(()=>window.testPlayer.getCurrentTime()<4);await page.click('#clear-loop');await page.click('#play');});
+ await check('A–B loop validates endpoints and seeks back to A',async()=>{await page.evaluate(()=>window.testPlayer.setTime(1));await page.click('#set-a');await page.evaluate(()=>window.testPlayer.setTime(3));await page.click('#set-b');assert.match(await page.locator('#loop-status').innerText(),/00:01 → 00:03/);await page.click('#play');await page.evaluate(()=>window.testPlayer.setTime(3.2));await page.waitForFunction(()=>window.testPlayer.getCurrentTime()<3);await page.click('#clear-loop');await page.click('#play');});
+ await check('manual scrolling suspends following and a button restores it',async()=>{await page.locator('#timeline').dispatchEvent('wheel');assert.equal(await page.locator('#follow').getAttribute('aria-pressed'),'false');assert.ok(await page.locator('#return-current').isVisible());await page.click('#return-current');assert.equal(await page.locator('#follow').getAttribute('aria-pressed'),'true');});
+ await check('video navigation isolates local lyrics and handles blocked autoplay honestly',async()=>{await page.click('#next');assert.match(await page.locator('#content-kind').innerText(),/非逐句歌詞/);assert.equal(await page.evaluate(()=>window.testPlayer.videoId),'m1_Z_-2uAco');await page.evaluate(()=>window.testPlayer.block=true);await page.click('#play');assert.match(await page.locator('#player-status').innerText(),/播放許可/);assert.match(await page.locator('#play').innerText(),/播放影片/);});
+ await check('search preserves replica video and speed control changes the API rate',async()=>{await page.fill('#song-search','怪獣');await page.locator('.song-choice').click();assert.equal(await page.evaluate(()=>window.testPlayer.videoId),'16gZm9oeLtI');await page.selectOption('#speed','0.75');assert.equal(await page.evaluate(()=>window.testPlayer.rate),.75);});
+ await check('invalid LRC retains existing cues and hostile text renders literally',async()=>{const before=await page.locator('.cue').count();await page.locator('#lrc-file').setInputFiles({name:'invalid.lrc',mimeType:'text/plain',buffer:Buffer.from('沒有時間軸')});await page.waitForFunction(()=>document.querySelector('#sync-status').textContent.includes('時間標記'));assert.equal(await page.locator('.cue').count(),before);await page.locator('#lrc-file').setInputFiles({name:'safe.lrc',mimeType:'text/plain',buffer:Buffer.from('[00:01]<img src=x onerror=alert(1)>')});await page.waitForFunction(()=>document.querySelectorAll('.cue').length===1);assert.equal(await page.locator('.cue img').count(),0);assert.match(await page.locator('.cue-primary').innerText(),/<img/);});
+ assert.deepEqual(errors,[]);await context.close();
+ for(const viewport of [{width:390,height:844},{width:320,height:740},{width:768,height:1024},{width:844,height:390}]){
+  const p=await browser.newPage({viewport});await p.route('https://www.youtube.com/iframe_api',r=>r.fulfill({contentType:'text/javascript',body:mock}));await p.goto(new URL('youtube.html#song-todome',base).href);
+  await check(`${viewport.width}px responsive page and 200% text have no horizontal overflow`,async()=>{assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await p.evaluate(()=>document.documentElement.style.fontSize='200%');assert.ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));});await p.close();
+ }
+ console.log(`${passed} YouTube interface checks passed using a controlled API fixture; live playback is checked separately.`);
+}finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});
