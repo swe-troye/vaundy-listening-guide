@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#a12820"><meta name="description" content="Vaundy 24 首逐首中文導聆，邊讀邊聽 Spotify，準備 HORO 台北演唱會。">
+  <title>逐首導聆 · Vaundy，在歌裡</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="listen.css">
+  <script src="data.js" defer></script><script src="core.js" defer></script><script src="listen.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#chapter">跳到歌曲導聆</a>
+  <div class="listen-shell">
+    <header class="listen-header"><a class="back-link" href="index.html">← 完整歌單</a><a class="listen-brand" href="listen.html">Vaundy，在歌裡</a><button id="chapters-open" type="button">找一首歌 ↓</button></header>
+    <main class="stage">
+      <aside class="stage-aside" aria-label="本次導聆"><img class="stage-poster" src="assets/horo-poster.jpg" width="1200" height="500" alt="Vaundy HORO 台北場官方海報"><p class="tour-name">ASIA ARENA TOUR 2026 “HORO”</p><p class="tour-date">10.31 / 11.01<br>台北小巨蛋</p><p class="tour-note">17:30 入場 · 19:00 開演</p><div class="current-song"><span id="chapter-number">01 / 24</span><p id="aside-title">泣き地蔵</p><p id="aside-chinese">哭泣的地藏</p></div><p class="list-note">依你提供的 Spotify 歌單<br>非官方演出曲目</p><a href="https://ticketplus.com.tw/activity/a56fce0af2da4d41e26b2dfa34b7babc" target="_blank" rel="noopener noreferrer">演出資訊 ↗</a></aside>
+      <article id="chapter" class="chapter" tabindex="-1" aria-labelledby="song-title">
+        <div class="chapter-top"><p id="song-meta">NakiJizo</p><button id="share" type="button">複製歌曲連結 ↗</button></div>
+        <h1 id="song-title">泣き地蔵</h1><p id="song-line" class="chapter-line"></p>
+        <div class="tabs" role="tablist" aria-label="導聆內容"><button type="button" id="tab-summary" role="tab" aria-selected="true" aria-controls="tab-content" data-tab="summary">白話導聆</button><button type="button" id="tab-meaning" role="tab" aria-selected="false" aria-controls="tab-content" data-tab="meaning" tabindex="-1">深入這首歌</button><button type="button" id="tab-listen" role="tab" aria-selected="false" aria-controls="tab-content" data-tab="listen" tabindex="-1">聽的時候</button></div>
+        <div id="tab-content" class="tab-content" role="tabpanel" aria-labelledby="tab-summary" tabindex="0"></div>
+        <div class="chapter-actions"><button id="sources-open" type="button">歌詞與背景來源 ↗</button><a id="full-note" href="index.html#song-naki-jizo">完整筆記 ↗</a></div>
+      </article>
+    </main>
+    <section class="music-bar" aria-label="當前歌曲播放器"><div id="spotify-player"></div><p>點播放器的 ▶ 聽這首<br><a id="spotify-direct" href="https://open.spotify.com/track/22D3hqjQ8R7t29wp6Gy44W" target="_blank" rel="noopener noreferrer">在 Spotify 開啟 ↗</a><small>播放依 Spotify 帳號與地區支援</small></p></section>
+    <footer class="chapter-footer"><button id="previous" type="button">← 上一首</button><p id="position" role="status" aria-live="polite">第 1 首，共 24 首</p><button id="next" type="button">下一首 →</button></footer>
+  </div>
+  <dialog id="chapters-dialog" aria-labelledby="chapters-title"><div class="dialog-heading"><h2 id="chapters-title">找一首歌</h2><button id="chapters-close" type="button" aria-label="關閉歌曲目錄">✕</button></div><label class="sr-only" for="chapter-search">搜尋歌名</label><input id="chapter-search" type="search" placeholder="搜尋日文、英文或中文歌名"><nav id="chapters-list" aria-label="歌曲章節"></nav><p id="chapters-empty" hidden>沒有找到；試試其他歌名。</p></dialog>
+  <dialog id="sources-dialog" aria-labelledby="sources-title"><div class="dialog-heading"><h2 id="sources-title">歌詞與背景來源</h2><button id="sources-close" type="button" aria-label="關閉來源">✕</button></div><div id="sources-content"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <noscript><p>請開啟 JavaScript 閱讀逐首導聆，或到 <a href="index.html">完整歌單</a> 取得 Spotify 連結。</p></noscript>
+</body>
+</html>

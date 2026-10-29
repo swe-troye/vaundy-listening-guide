@@ -1,0 +1,13 @@
+{
+  "name": "vaundy-listening-guide",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vaundy 繁體中文演前導聆網站",
+  "scripts": {
+    "dev": "node scripts/serve.cjs",
+    "start": "node scripts/serve.cjs",
+    "preview": "node scripts/serve.cjs dist",
+    "build": "node scripts/build.cjs",
+    "test": "node --test scripts/core.test.cjs"
+  }
+}
