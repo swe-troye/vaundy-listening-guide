@@ -1,32 +1,77 @@
 <!doctype html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#a12820"><meta name="description" content="Vaundy 24 首逐首中文導聆，邊讀邊聽 Spotify，準備 HORO 台北演唱會。">
-  <title>逐首導聆 · Vaundy，在歌裡</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="listen.css">
-  <script src="data.js" defer></script><script src="core.js" defer></script><script src="listen.js" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#182A3E">
+  <meta name="description" content="用 Vaundy 動漫人像與橫式章節，逐首走進 HORO 歌單的 24 首歌。歌曲大意、意境與來源，一頁一首慢慢翻。">
+  <title>動漫導聆 · Vaundy，在歌裡</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="listen.css">
+  <link rel="preload" href="assets/vaundy-guide.svg" as="image" type="image/svg+xml">
+  <script src="data.js" defer></script>
+  <script src="core.js" defer></script>
+  <script src="player.js" defer></script>
+  <script src="listen.js" defer></script>
 </head>
-<body>
-  <a class="skip" href="#chapter">跳到歌曲導聆</a>
-  <div class="listen-shell">
-    <header class="listen-header"><a class="back-link" href="index.html">← 完整歌單</a><a class="listen-brand" href="listen.html">Vaundy，在歌裡</a><button id="chapters-open" type="button">找一首歌 ↓</button></header>
-    <main class="stage">
-      <aside class="stage-aside" aria-label="本次導聆"><img class="stage-poster" src="assets/horo-poster.jpg" width="1200" height="500" alt="Vaundy HORO 台北場官方海報"><p class="tour-name">ASIA ARENA TOUR 2026 “HORO”</p><p class="tour-date">10.31 / 11.01<br>台北小巨蛋</p><p class="tour-note">17:30 入場 · 19:00 開演</p><div class="current-song"><span id="chapter-number">01 / 24</span><p id="aside-title">泣き地蔵</p><p id="aside-chinese">哭泣的地藏</p></div><p class="list-note">依你提供的 Spotify 歌單<br>非官方演出曲目</p><a href="https://ticketplus.com.tw/activity/a56fce0af2da4d41e26b2dfa34b7babc" target="_blank" rel="noopener noreferrer">演出資訊 ↗</a></aside>
-      <article id="chapter" class="chapter" tabindex="-1" aria-labelledby="song-title">
-        <div class="chapter-top"><p id="song-meta">NakiJizo</p><button id="share" type="button">複製歌曲連結 ↗</button></div>
-        <h1 id="song-title">泣き地蔵</h1><p id="song-line" class="chapter-line"></p>
-        <div class="tabs" role="tablist" aria-label="導聆內容"><button type="button" id="tab-summary" role="tab" aria-selected="true" aria-controls="tab-content" data-tab="summary">白話導聆</button><button type="button" id="tab-meaning" role="tab" aria-selected="false" aria-controls="tab-content" data-tab="meaning" tabindex="-1">深入這首歌</button><button type="button" id="tab-listen" role="tab" aria-selected="false" aria-controls="tab-content" data-tab="listen" tabindex="-1">聽的時候</button></div>
-        <div id="tab-content" class="tab-content" role="tabpanel" aria-labelledby="tab-summary" tabindex="0"></div>
-        <div class="chapter-actions"><button id="sources-open" type="button">歌詞與背景來源 ↗</button><a id="full-note" href="index.html#song-naki-jizo">完整筆記 ↗</a></div>
+<body data-scene="sky" data-palette="mint">
+  <a class="skip" href="#slide-title">跳到歌曲</a>
+  <div class="anime-shell">
+    <header class="anime-header">
+      <a class="anime-brand" href="index.html"><span class="brand-sign" aria-hidden="true">V</span><span>Vaundy，在歌裡<small>動漫導聆</small></span></a>
+      <p class="orientation-note">橫拿手機，展開這段旅程</p>
+      <nav class="header-actions" aria-label="頁面操作">
+        <a class="header-link" href="index.html">文字版<span aria-hidden="true"> ↗</span></a>
+        <button id="chapter-open" class="header-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h4v4H4zm0 10h4v4H4zM12 7h8M12 17h8"/></svg><span>章節</span></button>
+        <button id="fullscreen" class="header-button fullscreen-button" type="button" aria-label="進入全螢幕"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5"/></svg></button>
+      </nav>
+    </header>
+    <main id="anime-stage" class="anime-stage" aria-label="歌曲導聆簡報" aria-roledescription="輪播">
+      <div class="scene-panel" aria-hidden="true">
+        <div class="scene-sun"></div>
+        <svg class="scene-landscape" viewBox="0 0 640 800" preserveAspectRatio="xMidYMax slice">
+          <defs><pattern id="scene-dot-pattern" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="currentColor"/></pattern></defs>
+          <g class="scene-sky-lines" fill="none" stroke="currentColor" stroke-width="2"><path d="M-40 178C131 126 284 151 345 186M338 186h135M-25 211h166M400 111h186"/><path d="M471 391h141M12 363h120"/></g>
+          <g class="scene-city" fill="currentColor"><path d="M0 693V516h56v-58h28v58h31v177h22V586h74V450h16v-31h10v31h16v243h27V541h65v152h22V593h39v-92h39v-33h13v33h22v192h15V557h48v-33h39v169h25V604h44v89h27V484h18v-36h10v36h13v209Z"/><path d="M0 708h640v92H0Z"/></g>
+          <g class="scene-waves" fill="none" stroke="currentColor" stroke-width="3"><path d="M-30 545Q130 499 290 545T650 545M-30 577Q130 531 290 577T650 577M-30 609Q130 563 290 609T650 609"/></g>
+          <g class="scene-stars" fill="currentColor"><path d="M91 172l6 22 22 6-22 6-6 22-6-22-22-6 22-6ZM488 242l5 16 16 5-16 5-5 16-5-16-16-5 16-5ZM370 82l4 12 12 4-12 4-4 12-4-12-12-4 12-4ZM49 370l4 12 12 4-12 4-4 12-4-12-12-4 12-4Z"/><circle cx="470" cy="94" r="3"/><circle cx="143" cy="309" r="3"/><circle cx="527" cy="401" r="4"/></g>
+          <g class="scene-petals" fill="currentColor"><path d="M67 341C41 321 50 298 73 306C92 286 114 301 103 321C126 339 109 360 90 350C73 373 52 359 67 341ZM493 156C476 143 482 128 497 134C510 121 524 130 518 144C533 156 522 169 509 163C498 178 484 169 493 156ZM527 507C500 486 513 464 535 473C553 453 576 468 565 489C585 505 572 528 552 518C535 540 514 525 527 507Z"/></g>
+          <path class="scene-dot-field" d="M14 489h170v242H14z" fill="url(#scene-dot-pattern)"/>
+        </svg>
+        <div class="scene-orbit"></div>
+        <p id="scene-word" class="scene-word">聴</p>
+        <img id="guide-character" class="guide-character" src="assets/vaundy-guide.svg" width="760" height="940" alt="" fetchpriority="high">
+        <div class="scene-caption"><span class="scene-caption-mark" aria-hidden="true">✦</span><p id="scene-caption">把耳朵，借給自我與社會。</p></div>
+      </div>
+      <article id="slide-copy" class="slide-copy" aria-labelledby="slide-title">
+        <div class="chapter-heading"><p class="chapter-marker"><span id="chapter-number">01</span><span class="chapter-rule" aria-hidden="true"></span><span id="chapter-name">自我與社會</span></p><span id="song-duration" class="song-duration">2:29</span></div>
+        <h1 id="slide-title" tabindex="-1">泣き地蔵</h1>
+        <p id="slide-meta" class="slide-meta">なきじぞう · NakiJizo</p>
+        <p id="slide-line" class="slide-line">一直叫我再努力一次，但我真的已經快撐不住了。</p>
+        <div id="content-tabs" class="content-tabs" role="tablist" aria-label="選擇導聆內容">
+          <button id="tab-summary" type="button" role="tab" aria-selected="true" aria-controls="content-panel" data-view="summary">歌曲大意</button>
+          <button id="tab-interpretation" type="button" role="tab" aria-selected="false" aria-controls="content-panel" data-view="interpretation" tabindex="-1">一種聽法</button>
+          <button id="tab-listen" type="button" role="tab" aria-selected="false" aria-controls="content-panel" data-view="listen" tabindex="-1">聆聽重點</button>
+        </div>
+        <div id="content-panel" class="content-panel" role="tabpanel" aria-labelledby="tab-summary" tabindex="0"><div id="slide-title-meaning" class="slide-fact"><h2>歌名意思</h2><p id="slide-title-meaning-text"></p></div><p id="slide-text"></p><div id="slide-highlight" class="slide-fact"><h2>歌詞亮點</h2><p id="slide-highlight-text"></p></div></div>
+        <div class="slide-footnote"><p id="content-label">原創摘要 · 完整原文與中譯已核對</p><button id="notes-open" class="notes-link" type="button">完整筆記與來源 <span aria-hidden="true">↗</span></button></div>
       </article>
+      <div id="page-turn" class="page-turn" aria-hidden="true"></div>
     </main>
-    <section class="music-bar" aria-label="當前歌曲播放器"><div id="spotify-player"></div><p>點播放器的 ▶ 聽這首<br><a id="spotify-direct" href="https://open.spotify.com/track/22D3hqjQ8R7t29wp6Gy44W" target="_blank" rel="noopener noreferrer">在 Spotify 開啟 ↗</a><small>播放依 Spotify 帳號與地區支援</small></p></section>
-    <footer class="chapter-footer"><button id="previous" type="button">← 上一首</button><p id="position" role="status" aria-live="polite">第 1 首，共 24 首</p><button id="next" type="button">下一首 →</button></footer>
+    <section class="music-dock" aria-labelledby="music-title">
+      <div id="spotify-player" class="spotify-player"></div>
+      <div class="music-meta"><button id="play-toggle" class="play-toggle" type="button" disabled>播放器載入中</button><p id="playback-status" class="spotify-instruction" role="status">按一次播放，翻頁時自動接著聽。</p><a id="spotify-open" class="spotify-open" href="https://open.spotify.com/track/22D3hqjQ8R7t29wp6Gy44W" target="_blank" rel="noopener noreferrer">在 Spotify 聽 ↗<span class="sr-only">（在新分頁開啟）</span></a></div>
+    </section>
+    <footer class="anime-footer">
+      <div class="journey"><p><strong id="journey-count">01</strong><span> / 24 首</span><span class="journey-caption">一首，一段風景。</span></p><div id="journey-track" class="journey-track" aria-hidden="true"></div></div>
+      <p class="keyboard-hint"><kbd>←</kbd><kbd>→</kbd> 翻頁<span> · 也可以左右滑動</span></p>
+      <div class="page-navigation"><button id="previous" class="previous-button" type="button" disabled><span aria-hidden="true">←</span><span>上一首</span></button><button id="next" class="next-button" type="button"><span id="next-label">下一首</span><span aria-hidden="true">→</span></button></div>
+    </footer>
   </div>
-  <dialog id="chapters-dialog" aria-labelledby="chapters-title"><div class="dialog-heading"><h2 id="chapters-title">找一首歌</h2><button id="chapters-close" type="button" aria-label="關閉歌曲目錄">✕</button></div><label class="sr-only" for="chapter-search">搜尋歌名</label><input id="chapter-search" type="search" placeholder="搜尋日文、英文或中文歌名"><nav id="chapters-list" aria-label="歌曲章節"></nav><p id="chapters-empty" hidden>沒有找到；試試其他歌名。</p></dialog>
-  <dialog id="sources-dialog" aria-labelledby="sources-title"><div class="dialog-heading"><h2 id="sources-title">歌詞與背景來源</h2><button id="sources-close" type="button" aria-label="關閉來源">✕</button></div><div id="sources-content"></div></dialog>
-  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <noscript><p>請開啟 JavaScript 閱讀逐首導聆，或到 <a href="index.html">完整歌單</a> 取得 Spotify 連結。</p></noscript>
+  <dialog id="chapter-dialog" class="chapter-dialog" aria-labelledby="chapters-title"><div class="dialog-heading"><div><p class="dialog-kicker">24 首，一起慢慢走</p><h2 id="chapters-title">選一段風景</h2></div><button id="chapter-close" class="dialog-close" type="button" aria-label="關閉章節目錄">✕</button></div><label class="chapter-search-label" for="chapter-search">找歌名</label><input id="chapter-search" class="chapter-search" type="search" placeholder="日文、英文或中文歌名" autocomplete="off"><nav id="chapter-list" class="chapter-list" aria-label="歌曲章節"></nav><p id="chapter-empty" class="chapter-empty" hidden>沒有符合的歌名，試試另一種語言。</p><p class="art-credit">以 Vaundy 為原型的原創 SVG 動漫人像。歌單依你提供的 Spotify 清單，非官方演出曲目。</p></dialog>
+  <dialog id="notes-dialog" class="notes-dialog" aria-labelledby="notes-title"><div class="dialog-heading"><div><p class="dialog-kicker">往歌裡，再走一點</p><h2 id="notes-title">泣き地蔵</h2></div><button id="notes-close" class="dialog-close" type="button" aria-label="關閉完整筆記">✕</button></div><div id="notes-content" class="notes-content"></div></dialog>
+  <p id="slide-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+  <p id="anime-toast" class="anime-toast" role="status" hidden></p>
+  <noscript><div class="no-script"><p>請開啟 JavaScript 使用章節翻頁；你也可以回到文字版閱讀。</p><a href="index.html">回文字版</a></div></noscript>
 </body>
 </html>

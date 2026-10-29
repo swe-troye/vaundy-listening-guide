@@ -1,7 +1,7 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
 const root = path.resolve(__dirname,'..');
-const files = ['index.html','style.css','data.js','core.js','app.js','favicon.svg','listen.html','listen.css','listen.js','assets/horo-poster.jpg'];
+const files = ['index.html','style.css','data.js','core.js','app.js','favicon.svg','listen.html','listen.css','listen.js','player.js','assets/horo-poster.jpg','assets/vaundy-guide.svg'];
 const read = file => fs.readFileSync(path.join(root,file),'utf8');
 for (const file of files) if(file.endsWith('.js')) new vm.Script(read(file),{filename:file});
 for (const [page,script] of [['index.html','app.js'],['listen.html','listen.js']]) {
@@ -17,9 +17,9 @@ for (const file of files) {fs.mkdirSync(path.dirname(path.join(out,file)),{recur
 for (const [page,css,app,name] of [['index.html','style.css','app.js','standalone.html'],['listen.html','listen.css','listen.js','listen-standalone.html']]) {
  let html=read(page).replace(/\s*<script src="[\w-]+\.js" defer><\/script>/g,'');
  html=html.replace(`<link rel="stylesheet" href="${css}">`,()=>`<style>${read(css)}</style>`);
- for(const [asset,mime] of [['favicon.svg','image/svg+xml'],['assets/horo-poster.jpg','image/jpeg']]) {const data=fs.readFileSync(path.join(root,asset)).toString('base64');html=html.split(`"${asset}"`).join(`"data:${mime};base64,${data}"`);}
+ for(const [asset,mime] of [['favicon.svg','image/svg+xml'],['assets/horo-poster.jpg','image/jpeg'],['assets/vaundy-guide.svg','image/svg+xml']]) {const data=fs.readFileSync(path.join(root,asset)).toString('base64');html=html.split(`"${asset}"`).join(`"data:${mime};base64,${data}"`);}
  html=html.replaceAll('href="listen.html','href="listen-standalone.html').replaceAll('href="index.html','href="standalone.html');
- const scripts=['data.js','core.js',app].map(f=>`<script>${read(f).replaceAll('listen.html#song-','listen-standalone.html#song-').replaceAll('index.html#song-','standalone.html#song-').replace(/<\/script/gi,'<\\/script')}</script>`).join('\n');
+ const scripts=['data.js','core.js',...(app==='listen.js'?['player.js']:[]),app].map(f=>`<script>${read(f).replaceAll('listen.html#song-','listen-standalone.html#song-').replaceAll('index.html#song-','standalone.html#song-').replace(/<\/script/gi,'<\\/script')}</script>`).join('\n');
  html=html.replace('</body>',()=>`${scripts}\n</body>`);fs.writeFileSync(path.join(out,name),html);
 }
-console.log(`Built ${songs.length} songs, 10 static assets, and 2 portable HTML files.`);
+console.log(`Built ${songs.length} songs, 12 static assets, and 2 portable HTML files.`);

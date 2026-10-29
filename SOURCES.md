@@ -81,3 +81,8 @@
 本站只發布原創中文摘要、意境聽法與提問，不複製完整歌詞或逐句翻譯。「歌曲背景」來自官方發行資料；沒有將它標為作者逐句解說。歌詞的說話者不自動等於藝人本人。
 
 原始研究快取留在未發布的 research/，不是網站資產；公開歌單快照只含曲目資訊。
+
+## 播放控制與原創插畫
+
+- Spotify 官方 iFrame API：https://developer.spotify.com/documentation/embeds/references/iframe-api 。控制播放、暫停、切換曲目與依事件判斷狀態；首次播放仍受瀏覽器政策限制。
+- 原創插畫 `assets/vaundy-guide.svg`：直接編寫SVG，無外部圖片、生圖API或API Key；Kaze方法回查與檔案來源記於README。

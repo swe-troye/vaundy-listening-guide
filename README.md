@@ -20,7 +20,7 @@ GitHub 儲存庫：https://github.com/swe-troye/vaundy-listening-guide
 - 慢慢讀／演前速讀，三語歌名搜尋、主題篩選、收藏與手動已讀。
 - 桌面目錄、手機目錄、歌曲深連結；儲存受限仍可閱讀。
 - 逐首導聆提供摘要／深入／聆聽三分頁，前後首、章節搜尋、鍵盤與左右滑動。
-- Spotify曲目播放器保留歌單版本；換歌移除舊播放器，切換導聆分頁保留播放。需手動開始，完整播放支援依帳號、地區與瀏覽器而異。
+- Spotify曲目播放器保留歌單版本；採官方 iFrame API 控制同一個播放器，按一次開始後翻頁自動播放選定歌曲，暫停後翻頁保持暫停。完整播放或試聽依帳號、地區與瀏覽器支援而異。
 
 2026/10/29 已讀24首完整日文原文與23首外部中文對照。〈soramimi〉未取得完整外部中譯，依完整日文撰寫摘要並單獨標示。內容為原創中文整理，不轉貼完整歌詞或逐句翻譯；編輯延伸不視為作者正式解說。原文來源主要為UtaTen，〈気まぐれ〉使用marumaru原文與中譯；外部中譯不自動視為官方翻譯。
 
@@ -41,3 +41,22 @@ node scripts/browser-check.cjs
 GitHub Pages 使用 main 分支根目錄發布。修改後執行測試及建置，再提交並推送即可更新。`research/` 包含僅供核對的原文與頁面快取，不屬於網站資產，不應發布；`playlist-snapshot.json` 只保留歌單資訊，不含Spotify工作階段資料。
 
 2026/10/29 驗證：5項資料／核心測試與21組Edge瀏覽器檢查通過，沒有頁面JavaScript錯誤。涵蓋1440px桌面、768px平板、390/320px手機、667×375橫向、1280×720矮桌面及200%文字。已實際確認Spotify顯示指定歌曲並檢視截圖；修正文字放大時首頁Spotify連結溢出，頁首改為自然換行。
+
+## 動漫版與人像繪製
+
+逐首聆聽網址：https://swe-troye.github.io/vaundy-listening-guide/listen.html 。此頁沿用 Kaze 動漫版的深藍外框、白色閱讀欄、左側人像、隨歌曲切換的場景、斜切翻頁、章節目錄與全螢幕操作；演唱會海報留在文字首頁。手機直式顯示人像帶與閱讀區，橫式展開左右構圖。
+
+`assets/vaundy-guide.svg` 是直接編寫 SVG 的原創 2D 動漫向量人像，特徵為蓬鬆捲髮、圓框墨鏡、寬鬆磚紅上衣與麥克風。它與 Kaze 的 `assets/kaze-guide.svg` 使用同一種製作方法：以 `<path>`、`<circle>`、漸層及麥克風網格 pattern 繪製，瀏覽器直接渲染，無需 OPENAI_API_KEY 或圖片生成 API。此次未使用 imagegen CLI。圖像可編輯、縮放，背景為透明，場景由 HTML/CSS 分層呈現。
+
+方法已回查 Kaze 原始 session `rollout-2026-10-28T11-14-29-01a18080-87e8-77e3-bb61-181004bf314b.jsonl`：2026-10-28 16:08 UTC 直接寫入 SVG 原始碼，後由提交 `db5a608` 收錄。Kaze README 也補上製作方式。未把 session 原文、帳號資料或憑證複製到專案。
+
+## 自動播放
+
+`player.js` 使用 Spotify 官方 https://open.spotify.com/embed/iframe-api/v1 ，透過 `createController`、`loadEntity`、`play`、`pause` 與播放事件切歌，不模擬跨網站按鈕點擊。此嵌入 API 不需 Spotify API Key 或 OAuth。首次進站由使用者按「開始播放」或播放器的 ▶，之後翻頁保留播放意圖；手動暫停後保持暫停。切換摘要分頁不重載播放器，快速翻頁只載入最後選定的歌曲。
+
+播放狀態以 Spotify 的 `playback_started`／`playback_update` 回報為準。若瀏覽器阻擋播放，頁面提示點播放器重試；API 無法載入時回退普通 embed，外部 Spotify 連結始終可用。未登入 Edge 實測提供約 30 秒預覽，無法用此方法保證完整歌曲或所有瀏覽器無操作播放。
+
+官方參考：https://developer.spotify.com/documentation/embeds/references/iframe-api 。實際播放檢查：啟動 `npm start` 後執行 `node scripts/playback-check.cjs`（需要本機 Edge 與 Playwright Core），用播放位置前進核對首次播放與換歌。
+
+
+2026/10/29 新版驗證：5項資料測試、建置、21組 Edge 版面／互動回歸全部通過，無頁面 JavaScript 錯誤；已檢視桌面及320／390px手機構圖。真實 Spotify 測試確認首次不強制出聲、按一次開始播放、換歌播放位置前進、暫停後換歌不播、預覽到期接下一首並出聲。`playback_update` 的結束狀態可能維持 `isPaused=false`，實作依實際 `position===duration` 判斷。
