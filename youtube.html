@@ -2,14 +2,14 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#a23c68"><meta name="description" content="Vaundy YouTube 同步聆聽實驗版：24 首日文與原創繁中翻譯、逐句跟隨、跳播與循環練習。">
-  <title>YouTube 同步聆聽 · Vaundy</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="youtube.css?v=lab-4">
-  <script src="data.js" defer></script><script src="core.js" defer></script><script src="youtube-data.js?v=lab-4" defer></script><script src="youtube-lrc.js?v=lab-4" defer></script><script src="youtube-readings.js?v=lab-4" defer></script><script src="youtube-core.js" defer></script><script src="youtube.js?v=lab-4" defer></script>
+  <meta name="theme-color" content="#a23c68"><meta name="description" content="Vaundy 歌詞跟唱：24 首日文與原創繁中翻譯、逐句跟隨、跳播與循環練習。">
+  <title>歌詞跟唱 · Vaundy</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="youtube.css?v=release-1">
+  <script src="data.js" defer></script><script src="core.js" defer></script><script src="youtube-data.js?v=release-1" defer></script><script src="youtube-lrc.js?v=release-1" defer></script><script src="youtube-readings.js?v=release-1" defer></script><script src="youtube-core.js" defer></script><script src="youtube.js?v=release-1" defer></script>
 </head>
 <body>
   <a class="skip" href="#timeline">跳到同步文字</a>
-  <header class="lab-header"><a class="brand" href="index.html"><span aria-hidden="true">V</span>Vaundy，在歌裡</a><div class="header-end"><span class="lab-tag">YouTube 實驗版</span><a href="listen.html">動漫導聆 ↗</a></div></header>
+  <header class="lab-header"><a id="home-open" class="brand" href="index.html"><span aria-hidden="true">V</span>Vaundy，在歌裡</a><div class="header-end"><span class="lab-tag">歌詞跟唱</span><a id="anime-open" href="listen.html">動漫導聆 ↗</a></div></header>
   <main class="lab-shell">
     <section class="song-heading" aria-labelledby="song-title"><div><p class="song-number" id="song-number">01 / 24</p><h1 id="song-title">泣き地蔵</h1><p id="song-reading"></p></div><div class="song-navigation"><button id="previous" type="button" aria-label="上一首">← 上一首</button><button id="next" type="button" aria-label="下一首">下一首 →</button></div></section>
     <div class="workspace">
@@ -20,10 +20,10 @@
         <a id="youtube-open" class="external-link" href="https://www.youtube.com/watch?v=yedEqZW27bc" target="_blank" rel="noopener noreferrer">在 YouTube 開啟 ↗</a>
         <div class="practice"><h2>反覆聽這一段</h2><div class="loop-controls"><button id="loop-line" type="button" aria-pressed="false">單句循環</button><button id="set-a" type="button">設定 A</button><button id="set-b" type="button">設定 B</button><button id="clear-loop" type="button">清除循環</button></div><p id="loop-status">先聽到想練習的位置，再設定起點 A 與終點 B。</p></div>
         <section class="song-picker" aria-labelledby="picker-title"><h2 id="picker-title">換一首歌</h2><label class="sr-only" for="song-search">搜尋歌名</label><input id="song-search" type="search" placeholder="日文、英文或中文歌名" autocomplete="off"><nav id="song-list" aria-label="24 首歌曲"></nav><p id="song-empty" hidden>沒有符合的歌名。</p></section>
-        <details class="source-details"><summary>影片與內容來源</summary><div id="sources"></div><p>實驗版的播放與同步互動參考 <a id="marumaru-link" href="https://www.marumaru-x.com/" target="_blank" rel="noopener noreferrer">marumaru ↗</a>。影片由官方 YouTube 播放器提供。</p></details>
+        <details class="source-details"><summary>影片與內容來源</summary><div id="sources"></div><p>播放與同步互動參考 <a id="marumaru-link" href="https://www.marumaru-x.com/" target="_blank" rel="noopener noreferrer">marumaru ↗</a>。影片由官方 YouTube 播放器提供。</p></details>
       </section>
       <section class="text-column" aria-labelledby="text-title">
-        <div class="text-heading"><div><h2 id="text-title">同步文字</h2><p id="content-kind">日文／中文逐句歌詞 · 原創繁中翻譯</p></div><button id="import-open" class="import-button" type="button">匯入 LRC</button><input id="lrc-file" type="file" accept=".lrc,.txt,text/plain" class="sr-only" tabindex="-1" aria-label="匯入歌詞時間軸"></div>
+        <div class="text-heading"><div><h2 id="text-title">同步歌詞</h2><p id="content-kind">日文／中文逐句歌詞 · 原創繁中翻譯</p></div><button id="import-open" class="import-button" type="button">匯入 LRC</button><input id="lrc-file" type="file" accept=".lrc,.txt,text/plain" class="sr-only" tabindex="-1" aria-label="匯入歌詞時間軸"></div>
         <div class="text-toolbar"><button id="follow" type="button" aria-pressed="true">跟隨播放</button><button id="readings" type="button" aria-pressed="true">顯示讀音</button><button id="translation" type="button" aria-pressed="true">顯示中文</button><label>字級<select id="font-size"><option value="small">小</option><option value="medium" selected>中</option><option value="large">大</option></select></label></div>
         <div class="lyrics-source"><a id="lyrics-source-link" href="https://www.marumaru-x.com/japanese-song/play-y8rj989dn9" target="_blank" rel="noopener noreferrer">在 marumaru 查看日文歌詞與中文翻譯 ↗</a><p id="lyrics-source-credit"></p><p id="lyrics-source-note">日文／時間軸來自你提供的 LRC；繁中由本站原創翻譯，語意與風格參考 marumaru。</p></div>
         <p id="timeline-hint" class="timeline-hint">點一句跳播，日文與中文一起跟隨播放。</p>
@@ -33,7 +33,7 @@
       </section>
     </div>
   </main>
-  <footer class="lab-footer"><p>獨立實驗版 · 歌單依你提供的 24 首，非官方演出曲目</p><a href="index.html">回完整歌單 ↗</a></footer>
+  <footer class="lab-footer"><p>歌詞跟唱 · 24 首日中對照與漢字讀音，非官方演出曲目</p><a id="guide-open" href="index.html">回完整歌單 ↗</a></footer>
   <noscript><p>請開啟 JavaScript 使用同步功能，或直接在 YouTube 播放。</p></noscript>
 </body>
 </html>

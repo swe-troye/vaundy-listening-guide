@@ -70,9 +70,11 @@ VAUNDY_BROWSER=webkit node scripts/playback-check.cjs
 檢查腳本使用 Playwright Core。Edge 走本機應用程式；WebKit可用 `PLAYWRIGHT_BROWSERS_PATH` 指定已安裝瀏覽器，本次下載在 `/private/tmp/vaundy-browsers`。測試以 `audio.currentTime` 前進和 `paused` 狀態核對，另模擬 `NotAllowedError` 及一直pending的播放要求，確認不會誤顯示播放中。
 
 
-## YouTube 同步聆聽實驗版
+## 歌詞跟唱（正式版）
 
-獨立網址：https://swe-troye.github.io/vaundy-listening-guide/youtube.html 。
+正式網址：https://swe-troye.github.io/vaundy-listening-guide/youtube.html 。
+
+入口：首頁「進入歌詞跟唱」；每首歌曲「完整播放・歌詞跟唱」；動漫導聆播放器旁的同名按鈕。逐首入口與歌詞頁回到動漫／文字版皆保留曲目，切換時先暫停當前播放。可攜 HTML 的跟唱連結指向正式 HTTPS 網址，避免單獨分享兩份可攜檔案時缺少歌詞頁。
 
 預設提供歌單 24 首完整日文與本站原創繁中逐句翻譯，資料見 `youtube-lrc.js`。日文與時間軸來自使用者提供的 `vaundy_lab2_lrc.zip`（LRCLIB），中文依該日文重新翻譯，語意與自然口語風格參考 marumaru。每首保留 LRCLIB 紀錄連結、翻譯歸屬與 marumaru 參考頁；〈soramimi〉未取得 marumaru 中文對照，由提供的日文直接翻譯。外站譯者署名屬參考頁，本站中文不冒稱為其作品。
 
@@ -84,7 +86,7 @@ VAUNDY_BROWSER=webkit node scripts/playback-check.cjs
 
 「匯入 LRC」可用自己的 `.lrc`／`.txt` 覆蓋這首內建歌詞；格式 `[00:12.50]文字`，同一時間多行可放日文與中文。檔案最多 500 KB，僅在瀏覽器解析與保存。「還原內建歌詞」清除覆蓋並恢復日中對照。內建歌詞的時間微調也按影片保存，只存偏移值、不重複存整份內建文字；曲目切換不互相污染。
 
-驗證：`npm test` 共 13 項；`node scripts/youtube-browser-check.cjs` 共 19 組受控 API 介面檢查，涵蓋雙語預載、匯入／還原、偏移保存、跳播、同步、單句及 A–B 循環、播放受阻、XSS 文字處理與手機／200% 文字。真正 YouTube 測試另外驗證播放時間、跳播與下一首播放；WebKit iPhone 模式不等於實體 iPhone Edge。
+驗證：`npm test` 共 13 項；`node scripts/youtube-browser-check.cjs` 共 20 組受控 API 介面檢查，涵蓋雙語預載、匯入／還原、偏移保存、跳播、同步、單句及 A–B 循環、播放受阻、XSS 文字處理與手機／200% 文字。真正 YouTube 測試另外驗證播放時間、跳播與下一首播放；WebKit iPhone 模式不等於實體 iPhone Edge。
 
 ```sh
 node scripts/youtube-browser-check.cjs
@@ -92,7 +94,7 @@ node scripts/youtube-live-check.cjs
 VAUNDY_BROWSER=webkit node scripts/youtube-live-check.cjs
 ```
 
-本機：`npm start`，開啟 http://localhost:4174/youtube.html 。YouTube iframe 需要 HTTP 來源與 referrer。建置包含實驗版 7 個資產，YouTube iframe API 不需要本站帳號或 API Key。
+本機：`npm start`，開啟 http://localhost:4174/youtube.html 。YouTube iframe 需要 HTTP 來源與 referrer。建置包含歌詞跟唱 7 個資產，YouTube iframe API 不需要本站帳號或 API Key。
 
 漢字上方讀音使用原生 `<ruby><rb>漢字</rb><rt>讀音</rt></ruby>`，預設顯示、可用「顯示讀音」切換；切換不改歌詞、翻譯或時間軸。`youtube-readings.js` 依 marumaru 的逐句標音對齊使用者提供的日文，保留〈再会〉「超→super」「隅→すき」等特殊唱法。〈soramimi〉參考 UtaTen；部分缺字由 UtaTen 補充。參考頁使用假名、原檔使用漢字等差異，另補一般讀音並標示為本站補充，沒有宣稱逐首實聽驗證所有唱法。匯入文字完全符合已核對的日文句子時，也可使用該句讀音。
 

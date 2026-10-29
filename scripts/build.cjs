@@ -19,7 +19,8 @@ for (const [page,css,app,name] of [['index.html','style.css','app.js','standalon
  html=html.replace(new RegExp(`<link rel="stylesheet" href="${css.replace('.','\\.')}(?:\\?[^"]*)?">`),()=>`<style>${read(css)}</style>`);
  for(const [asset,mime] of [['favicon.svg','image/svg+xml'],['assets/horo-poster.jpg','image/jpeg'],['assets/vaundy-guide.svg','image/svg+xml']]) {const data=fs.readFileSync(path.join(root,asset)).toString('base64');html=html.split(`"${asset}"`).join(`"data:${mime};base64,${data}"`);}
  html=html.replaceAll('href="listen.html','href="listen-standalone.html').replaceAll('href="index.html','href="standalone.html');
- const scripts=['data.js','core.js',...(app==='listen.js'?['previews.js','player.js']:[]),app].map(f=>`<script>${read(f).replaceAll('listen.html#song-','listen-standalone.html#song-').replaceAll('index.html#song-','standalone.html#song-').replace(/<\/script/gi,'<\\/script')}</script>`).join('\n');
+ html=html.replaceAll('href="youtube.html','href="https://swe-troye.github.io/vaundy-listening-guide/youtube.html');
+ const scripts=['data.js','core.js',...(app==='listen.js'?['previews.js','player.js']:[]),app].map(f=>`<script>${read(f).replaceAll('listen.html#song-','listen-standalone.html#song-').replaceAll('index.html#song-','standalone.html#song-').replaceAll('youtube.html#song-','https://swe-troye.github.io/vaundy-listening-guide/youtube.html#song-').replace(/<\/script/gi,'<\\/script')}</script>`).join('\n');
  html=html.replace('</body>',()=>`${scripts}\n</body>`);fs.writeFileSync(path.join(out,name),html);
 }
 console.log(`Built ${songs.length} songs, 20 static assets, and 2 portable HTML files.`);

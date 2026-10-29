@@ -118,7 +118,8 @@
   function renderSong() {
     const s=song(),v=video();$('song-number').textContent=`${String(index+1).padStart(2,'0')} / ${songs.length}`;
     $('song-title').textContent=s.name;$('song-reading').textContent=`${s.reading} / ${s.chinese}`;
-    document.title=`${s.name} · YouTube 同步聆聽`;$('youtube-open').href=v.source;
+    $('anime-open').href=`listen.html#song-${s.id}`;$('home-open').href=$('guide-open').href=`index.html#song-${s.id}`;
+    document.title=`${s.name} · 歌詞跟唱`;$('youtube-open').href=v.source;
     $('previous').disabled=index===0;$('next').disabled=index===songs.length-1;
     const b=bundled();
     $('sources').innerHTML=`<p><strong>影片：</strong>${e(v.title)}</p><p><strong>頻道：</strong>${e(v.channel)} · ${e(v.checkedAt)} 核對</p><p><a href="${e(v.source)}" target="_blank" rel="noopener noreferrer">官方 YouTube 影片 ↗</a></p>${b?`<p><strong>日文歌詞／時間軸：</strong>使用者提供的 ${e(b.providedFile)}（<a href="${e(b.sourceUrl)}" target="_blank" rel="noopener noreferrer">LRCLIB 原始紀錄 ↗</a>）</p><p><strong>中文：</strong>本站原創繁中翻譯；語意與風格參考 marumaru。時間軸尚未逐句實聽校正，請按播放微調。</p>`:'<p>內建文字為本站原創中文導聆。</p>'}`;
@@ -159,7 +160,7 @@
     $('lrc-file').value='';
   });
   $('remove-lrc').addEventListener('click',()=>{try{localStorage.removeItem(storageKey());}catch{}clearLoop();restoreLRC();setActive(ready?player.getCurrentTime():0,false);});
-  $('youtube-open').addEventListener('click',()=>{if(ready)pause();});
+  for(const id of ['youtube-open','anime-open','home-open','guide-open'])$(id).addEventListener('click',()=>{if(ready)pause();});
   addEventListener('hashchange',()=>{const i=songs.findIndex(s=>`#song-${s.id}`===location.hash);if(i>=0)select(i);});
   document.addEventListener('keydown',event=>{
     if(event.altKey||event.ctrlKey||event.metaKey||event.target.closest('input,select,textarea,button,a'))return;

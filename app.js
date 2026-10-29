@@ -53,7 +53,7 @@
         <nav class="song-navigation" aria-label="${e(s.name)}的前後歌曲">${i > 0 ? `<a href="#song-${songs[i - 1].id}">← ${e(songs[i - 1].name)}</a>` : '<span></span>'}${i < songs.length - 1 ? `<a href="#song-${songs[i + 1].id}">${e(songs[i + 1].name)} →</a>` : '<a href="#top">回到頂部 ↑</a>'}</nav>
       </div></details>
       <p class="listen-tip">${icons.listen}<span><strong>聽的時候</strong>${e(s.listen)}</span></p>
-      <a class="track-listen" href="listen.html#song-${s.id}" target="_blank" rel="noopener noreferrer">${icons.listen} 邊讀邊聽這首 ↗<span class="sr-only">（在新分頁開啟）</span></a>
+      <nav class="song-listening-links" aria-label="${e(s.name)}的聆聽方式"><a class="track-listen track-lyrics" href="youtube.html#song-${s.id}" target="_blank" rel="noopener noreferrer">${icons.listen} 完整播放・歌詞跟唱 ↗<span class="sr-only">（在新分頁開啟）</span></a><a class="track-listen" href="listen.html#song-${s.id}" target="_blank" rel="noopener noreferrer">動漫導聆・30 秒試聽 ↗<span class="sr-only">（在新分頁開啟）</span></a></nav>
       ${sourceDetails(s)}
     </article>`;
   }

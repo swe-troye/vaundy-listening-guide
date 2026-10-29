@@ -98,7 +98,10 @@
   }
   const player = window.VaundyPlayer.create({host:$('spotify-player'),button:$('play-toggle'),status:$('playback-status')});
   $('spotify-open').addEventListener('click',()=>player.pause());
+  $('lyrics-open').addEventListener('click',()=>player.pause());
   function renderPlayer(song) {
+    $('lyrics-open').href = `youtube.html#song-${song.id}`;
+    $('lyrics-open').setAttribute('aria-label',`完整播放與歌詞跟唱：${song.name}`);
     $('spotify-open').href = `https://open.spotify.com/track/${song.spotifyTrackId}`;
     $('spotify-open').setAttribute('aria-label',`在 Spotify 聽 ${song.name}（在新分頁開啟）`);
     player.select(song);
@@ -152,7 +155,7 @@
       <h3>一種聽法 · 編輯延伸</h3><p>${e(song.interpretation)}</p>
       <h3>聆聽重點</h3><p>${e(song.listen)}</p>
       <h3>留給自己的一個問題</h3><p>${e(song.prompt)}</p>
-      <h3>原文與中文翻譯來源</h3><p class="notes-meta">${e(song.research.checkedAt)} 核對。原文：${e(song.research.originalScope)}；中譯：${e(song.research.translationScope)}。本站不轉貼完整歌詞或逐句翻譯。</p><ul>${song.sources.map(source=>`<li><a href="${e(source.url)}" target="_blank" rel="noopener noreferrer">${e(source.name)} ↗<span class="sr-only">（在新分頁開啟）</span></a><p>${e(source.scope)}${source.credit ? `；${e(source.credit)}` : ''}</p></li>`).join('')}</ul><p class="notes-meta">${e(song.research.note)}</p>
+      <h3>原文與中文翻譯來源</h3><p class="notes-meta">${e(song.research.checkedAt)} 核對。原文：${e(song.research.originalScope)}；中譯：${e(song.research.translationScope)}。本頁顯示原創中文導聆；逐句日中對照可至歌詞跟唱頁。</p><ul>${song.sources.map(source=>`<li><a href="${e(source.url)}" target="_blank" rel="noopener noreferrer">${e(source.name)} ↗<span class="sr-only">（在新分頁開啟）</span></a><p>${e(source.scope)}${source.credit ? `；${e(source.credit)}` : ''}</p></li>`).join('')}</ul><p class="notes-meta">${e(song.research.note)}</p>
       <a class="text-guide-link" href="index.html#song-${song.id}">在文字版繼續讀 ${e(song.name)} ↗</a>`;
     openDialog('notes-dialog');
   });

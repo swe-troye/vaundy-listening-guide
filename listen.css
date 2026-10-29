@@ -249,6 +249,9 @@ dialog::backdrop { background: oklch(.19 .03 250 / .7); }
 .play-toggle { min-height: 44px; background: var(--accent); color: var(--ink); border-radius: .5rem; padding: .5rem .875rem; font-size: .875rem; font-weight: 700; }
 .play-toggle:focus-visible { outline-color: var(--accent); }
 .music-meta { min-width: 0; }
+.lyrics-open { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; max-width: 100%; padding: .5rem .75rem; margin-bottom: .5rem; font-size: var(--text-caption); font-weight: 600; color: var(--ink); background: var(--accent); border-radius: .5rem; text-decoration: none; }
+.lyrics-open:hover { background: oklch(.95 .12 100); }
+.lyrics-open:focus-visible { outline-color: var(--accent); }
 .music-meta .spotify-instruction { margin-top: .25rem; }
 .anime-header { flex-wrap: wrap; }
 #slide-title { font-size: clamp(1.75rem,3.4vw,3.5rem); }

@@ -31,13 +31,12 @@ Spotify使用官方createController/loadEntity/play/pause與事件。初次按�
 同步src/play保留首次手勢，timeupdate前進才標播放中，pending表示載入、可取消；NotAllowedError、網路/解碼錯誤有提示。原生ended接下一首，暫停保留，開啟Spotify連結會停止試聽。所有錯誤提示在手機可見。測試以實際audio.currentTime/paused核對，已在WebKit iPhone模式確認整段播完接下一首；不是實體iPhone驗證。前面iFrame API筆記僅為舊版歷史，勿恢復為現行實作。
 
 
-## YouTube 同步實驗版（獨立路徑）
+## 歌詞跟唱正式版
 
-使用者要求先做另一網址、從YouTube播放、致敬marumaru操作。新增youtube.html/css/js、youtube-core.js與youtube-data.js，網址為/youtube.html；不替換原native試聽頁或首頁入口。24支官方影片逐一oEmbed核對，两首replica對應錄音。未搬外部完整歌詞，內建6段原創導聆提示，UI清楚標非唱詞；LRC在瀏覽器本機匯入後可逐句同步與双行顯示，按videoID本機保存且可清除。
+正式路徑 /youtube.html；首頁主入口、24 首歌曲入口及動漫導聆播放器旁皆可點開。雙向切換保留 song hash，跨頁先暫停當前播放器。可攜版入口指向公開 HTTPS 歌詞頁，兩份可攜閱讀檔仍可單獨分享。
 
-支援seek、follow-scroll、single-line/AB loop、speed、font-size、offset、歌單搜尋與深連結。單句循環固定loopCue，避免越過下一句邊界後跟著activeIndex跑掉。播放時間實際前進才標播放中，YouTube onAutoplayBlocked有提示；15s連線逾時保留直接YouTube連結。YouTube需要HTTP referrer，local file不適用。
+24 首使用 Vaundy - Topic 官方錄音，兩首 replica 保留版本。youtube-lrc.js 內建使用者提供 ZIP 的日文與 LRC 時間軸，以及本站原創繁中翻譯；youtube-readings.js 含參考 marumaru／UtaTen 的讀音，保留超→super 等逐句特殊唱法。普通字形差異補充見 scripts/build-readings.py。完整來源、操作與維護方式見 README.md／SOURCES.md。
 
-測試：npm test11項；youtube-browser-check.cjs使用受控YTfixture，15項UI與版面通過；真正YouTube在Edge與WebKit iPhone模式已確認首曲播放與換首時間前進。youtube-live-check.cjs保存真實影片、匯入LRC與seek檢查，與fixture測試分開。新data僅含影片metadata，research/仍禁止提交，未帶任何lyrics全文、tokens或session內容。
+本機匯入可覆蓋與還原內建歌詞；偏移按影片保存，ruby 開關不改文字與時間。影片時間前進才顯示播放中，播放受阻仍提示手動點播放。所有時間軸仍標記 timingVerified:false，總長核對不等於逐句實聽校正。
 
-
-marumaru credit更新：youtube同步區上方增加lyrics-source-link/credit/note，23首連到原站日中對照頁並顯示翻譯署名；soramimi連已核對原文並保留中文缺資料說明。気まぐれ來源kind是original，依marumaru URL取來源，已修正先前連到首頁的情況。怪獣の花唄註記原曲詞頁與replica影片版本差異。未複製原站完整歌詞或翻譯；credit與授權為不同事項。
+驗證使用 core 單元測試、受控 YouTube fixture、閱讀頁與手機排版、真正 WebKit／Edge 播放。新增切換連結已驗證保留曲目及暫停音訊。research/ 與使用者 outputs/ 不加入提交；不提交原站 HTML、tokens 或 session 紀錄。

@@ -78,7 +78,7 @@
 
 ## 摘要原則
 
-主站與動漫導聆頁發布原創中文摘要、意境聽法與提問；YouTube 實驗頁的使用者提供歌詞與原創逐句翻譯另列於文末。「歌曲背景」來自官方發行資料；沒有將它標為作者逐句解說。歌詞的說話者不自動等於藝人本人。
+主站與動漫導聆頁發布原創中文摘要、意境聽法與提問；歌詞跟唱頁的使用者提供歌詞與原創逐句翻譯另列於文末。「歌曲背景」來自官方發行資料；沒有將它標為作者逐句解說。歌詞的說話者不自動等於藝人本人。
 
 原始研究快取留在未發布的 research/，不是網站資產；公開歌單快照只含曲目資訊。
 
@@ -93,7 +93,7 @@
 24首公開預覽取自使用者提供的Spotify歌單embed的audioPreview欄位，依playlist-snapshot.json的曲目ID逐一對應。安全過濾後的URL見previews.js，僅含p.scdn.co/mp3-preview音訊路徑，不含token、client credentials或URL query。2026/10/29逐一核對24個來源均回傳audio/mpeg。網站播放公開試聽片段，完整歌曲由每首Spotify連結開啟。播放器現行方式見README「自動播放（iPhone修正）」；先前iFrame API為歷史版本。
 
 
-## YouTube 同步實驗版來源
+## 歌詞跟唱來源
 
 2026/10/29 更新為 24 首內建日文／原創繁中逐句對照。
 
@@ -103,7 +103,7 @@
 - 官方錄音：`youtube-data.js`。24 支 Vaundy - Topic 錄音由 YouTube Music 搜尋取得，再以 oEmbed 與影片 metadata 核對官方頻道 ID、名稱／版本及時長；兩首 replica 保留對應錄音。錄音與 LRC 標示時長最多差 2 秒，不視為逐句實聽驗證。`timingVerified:false` 保留，介面提供時間微調。
 - YouTube iframe API：https://developers.google.com/youtube/iframe_api_reference 。使用 playsinline、原生 controls、字幕與播放事件，保留官方播放器及直接影片連結。
 - 互動參考：https://www.marumaru-x.com/japanese-song/play-y8rj989dn9 。逐句高亮、翻譯切換與循環練習自行實作。
-- 本機覆蓋：自行匯入的 LRC 按影片 ID 存於瀏覽器，可還原內建；檔案不由匯入功能上傳。提供 ZIP 所建立的內建日中資料則隨實驗頁發布。
+- 本機覆蓋：自行匯入的 LRC 按影片 ID 存於瀏覽器，可還原內建；檔案不由匯入功能上傳。提供 ZIP 所建立的內建日中資料則隨歌詞頁發布。
 
 未逐句實聽核對全部 24 首。播放測試與來源核對不能取代聽覺上的詞句時間校正。
 
