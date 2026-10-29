@@ -38,3 +38,20 @@ test('all supplied songs have bilingual timing within the selected studio record
  }
  assert.match(lyrics.gyakko.name,/replica/);assert.match(lyrics.kaiju.name,/replica/);
 });
+test('ruby segments preserve supplied lyric text and contextual sung readings',()=>{
+ const ctx={window:{}};for(const file of ['youtube-lrc.js','youtube-readings.js'])vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8'),ctx);
+ const {VAUNDY_LRC:lyrics,VAUNDY_READINGS:readings}=ctx.window;
+ assert.equal(Object.keys(readings).length,24);
+ for(const [id,lrc] of Object.entries(lyrics)){
+  for(const cue of parseLRC(lrc.text)){
+   const segments=readings[id].lines[cue.primary];assert.ok(segments,id+' has this cue');
+   assert.equal(segments.map(x=>x.text).join(''),cue.primary,id+' keeps original text');
+   assert.ok(segments.every(x=>x.reading||!/[\u3400-\u9fff]/u.test(x.text)),id+' annotates supplied kanji');
+  }
+  assert.match(readings[id].sourceUrl,/^https:\/\/(www\.marumaru-x\.com|utaten\.com)\//);
+ }
+ for(const line of ['超 try','超 high'])assert.equal(readings.saikai.lines[line].find(x=>x.text==='超').reading,'super');
+ assert.ok(Object.values(readings.saikai.lines).some(line=>line.some(x=>x.text==='隅'&&x.reading==='すき')));
+ assert.equal(readings['tokyo-flash'].lines[Object.keys(readings['tokyo-flash'].lines).find(x=>x.includes('上手'))].find(x=>x.text==='上手').reading,'うま');
+ assert.ok(Object.values(readings.napori.lines).some(line=>line.some(x=>x.text==='2人'&&x.reading==='ふたり')));
+});

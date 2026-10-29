@@ -17,7 +17,7 @@ const {chromium,webkit}=require('/Users/troye/.cache/codex-runtimes/codex-primar
   const cue=await page.evaluate(()=>window.VaundyTimeline.parseLRC(window.VAUNDY_LRC['naki-jizo'].text)[1]);
   await page.locator('[data-cue="1"]').click();
   await page.waitForFunction(()=>document.querySelector('[data-cue="1"]').getAttribute('aria-current')==='true');
-  assert.equal(await page.locator('[data-cue="1"] .cue-primary').innerText(),cue.primary);
+  assert.equal(await page.locator('[data-cue="1"] .cue-primary').evaluate(el=>{const copy=el.cloneNode(true);copy.querySelectorAll('rt').forEach(x=>x.remove());return copy.textContent;}),cue.primary);
   assert.equal(await page.locator('[data-cue="1"] .cue-secondary').innerText(),cue.secondary);
   console.log('PASS bundled Japanese and Chinese seek and highlight together on live playback');
   await page.locator('#lrc-file').setInputFiles({name:'original-test.lrc',mimeType:'text/plain',buffer:Buffer.from('[00:00]本機測試提示一\n[00:02]本機測試提示二\n[00:40]本機測試提示三')});

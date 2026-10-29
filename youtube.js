@@ -10,8 +10,9 @@
   let guardTimer,apiTimer,pollTimer;
   const song=()=>songs[index],video=()=>videos[song().id];
   const bundled=()=>lyrics[song().id];
+  const readingData=()=>window.VAUNDY_READINGS?.[song().id];
   const storageKey=()=>`vaundy-youtube-lrc-v1-${video().videoId}`;
-  const currentPlayer=()=>player?.getVideoData?.().video_id===video().videoId;
+  const currentPlayer=()=>player?.getVideoData?.()?.video_id===video().videoId;
   function playbackLabel() {
     $('play').disabled=!ready;
     const text=!ready?'播放器載入中':actualPlaying?'❚❚ 暫停':pending?'取消播放':'▶ 播放影片';if($('play').textContent!==text)$('play').textContent=text;
@@ -40,7 +41,15 @@
     for(const [i,cue] of cues.entries()) {
       const button=document.createElement('button');button.type='button';button.className='cue';button.dataset.cue=String(i);
       const time=document.createElement('span');time.className='cue-time';time.textContent=formatTime(cue.start+offset);
-      const words=document.createElement('span');const primary=document.createElement('span');primary.className='cue-primary';primary.textContent=cue.primary;words.append(primary);
+      const words=document.createElement('span');const primary=document.createElement('span');primary.className='cue-primary';primary.lang='ja';
+      const segments=readingData()?.lines[cue.primary];
+      if(segments&&segments.map(x=>x.text).join('')===cue.primary){
+        for(const segment of segments){
+          if(segment.reading){const ruby=document.createElement('ruby'),rb=document.createElement('rb'),rt=document.createElement('rt');rb.textContent=segment.text;rt.textContent=segment.reading;ruby.append(rb,rt);primary.append(ruby);}
+          else primary.append(document.createTextNode(segment.text));
+        }
+      }else primary.textContent=cue.primary;
+      words.append(primary);
       if(cue.secondary){const secondary=document.createElement('span');secondary.className='cue-secondary';secondary.textContent=cue.secondary;words.append(secondary);}
       button.append(time,words);$('timeline').append(button);
     }
@@ -48,10 +57,12 @@
     $('timeline-hint').textContent=imported||bundled()?'點一句跳播，日文與中文一起亮起；時間不合可在下方微調。':'先用原創導聆提示體驗同步。提示時間按影片段落配置；匯入 LRC 才是逐句歌詞對應。';
     $('remove-lrc').disabled=!imported;
     const bilingual=cues.some(c=>c.secondary);$('translation').disabled=!bilingual;
+    $('readings').disabled=!$('timeline').querySelector('ruby');
     $('sync-status').textContent=`${cues.length} 個時間點${imported?' · 匯入歌詞僅留在此瀏覽器':bundled()?' · LRC 尚未逐句實聽校正':''}`;
     const s=song(),marumaru=s.sources.find(x=>x.url.includes('marumaru')),b=bundled();
     $('lyrics-source-credit').textContent=imported?'目前顯示你匯入的 LRC，內容與翻譯以該檔案為準。':b?'日文歌詞／時間軸：你提供的 LRC（LRCLIB）；繁中：本站原創翻譯。':'本站原創中文導聆。';
-    $('lyrics-source-note').textContent=`${marumaru?'語意與翻譯風格參考：marumaru；參考頁翻譯署名請見原站。':'這首依你提供的日文原創翻譯，未取得 marumaru 中文對照。'}${!imported&&b?' 時間軸尚未逐句實聽校正，可依播放調整。':''}${s.id==='kaiju'?' marumaru 頁為原曲，播放與內建 LRC 為 replica 版。':''}`;
+    const readings=readingData();
+    $('lyrics-source-note').textContent=`${marumaru?'語意與翻譯風格參考：marumaru；參考頁翻譯署名請見原站。':'這首依你提供的日文原創翻譯，未取得 marumaru 中文對照。'}${readings?` 讀音參考：${readings.sourceName}${readings.supplementUrl?'，UtaTen 補充':''}${readings.editorialReadings?'；異體寫法另由本站補上一般讀音':''}。`:''}${!imported&&b?' 時間軸尚未逐句實聽校正，可依播放調整。':''}${s.id==='kaiju'?' marumaru 頁為原曲，播放與內建 LRC 為 replica 版。':''}`;
   }
   function setActive(time,scroll=true) {
     const next=activeIndex(cues,time,offset);if(next===active)return;
@@ -133,6 +144,7 @@
   $('follow').addEventListener('click',()=>setFollowing(!following));$('return-current').addEventListener('click',()=>setFollowing(true));
   for(const event of ['wheel','touchmove'])$('timeline').addEventListener(event,()=>setFollowing(false),{passive:true});
   $('translation').addEventListener('click',()=>{const shown=$('translation').getAttribute('aria-pressed')==='true';$('translation').setAttribute('aria-pressed',String(!shown));$('timeline').classList.toggle('hide-secondary',shown);});
+  $('readings').addEventListener('click',()=>{const shown=$('readings').getAttribute('aria-pressed')==='true';$('readings').setAttribute('aria-pressed',String(!shown));$('timeline').classList.toggle('hide-readings',shown);if(following&&active>=0)scrollToRow($('timeline').children[active]);});
   $('font-size').addEventListener('change',()=>$('timeline').dataset.size=$('font-size').value);
   $('loop-line').addEventListener('click',()=>{singleLoop=!singleLoop;loopCue=singleLoop?Math.max(0,active):-1;pointA=null;pointB=null;loopLabel();});
   $('set-a').addEventListener('click',()=>{if(!ready)return;singleLoop=false;pointA=player.getCurrentTime();pointB=null;loopLabel();});

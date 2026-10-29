@@ -63,6 +63,10 @@ details>summary { cursor: pointer; min-height: 44px; padding: .5rem 0; color: va
 .cue-secondary { display: block; color: var(--muted); font-size: 1rem; white-space: pre-wrap; line-height: 1.8; margin-top: .375rem; }
 .timeline[data-size="small"] .cue-primary { font-size: 1rem; }.timeline[data-size="large"] .cue-primary { font-size: 1.375rem; }
 .timeline.hide-secondary .cue-secondary { display: none; }
+.cue-primary ruby { ruby-position: over; ruby-align: center; }
+.cue-primary rt { font-size: max(.625rem, .55em); font-weight: 400; line-height: 1; color: var(--muted); }
+.timeline:has(ruby):not(.hide-readings) .cue-primary { line-height: 2.25; }
+.timeline.hide-readings rt { display: none; }
 .timeline-bottom { padding: .5rem 1.5rem; } #sync-status { font-size: .875rem; color: var(--muted); }
 .sync-settings { border-top: 1px solid var(--border); padding: .375rem 1.5rem 1rem; font-size: .875rem; }
 .sync-settings>label { display: flex; justify-content: space-between; margin: .5rem 0; }

@@ -84,7 +84,7 @@ VAUNDY_BROWSER=webkit node scripts/playback-check.cjs
 
 「匯入 LRC」可用自己的 `.lrc`／`.txt` 覆蓋這首內建歌詞；格式 `[00:12.50]文字`，同一時間多行可放日文與中文。檔案最多 500 KB，僅在瀏覽器解析與保存。「還原內建歌詞」清除覆蓋並恢復日中對照。內建歌詞的時間微調也按影片保存，只存偏移值、不重複存整份內建文字；曲目切換不互相污染。
 
-驗證：`npm test` 共 12 項；`node scripts/youtube-browser-check.cjs` 共 18 組受控 API 介面檢查，涵蓋雙語預載、匯入／還原、偏移保存、跳播、同步、單句及 A–B 循環、播放受阻、XSS 文字處理與手機／200% 文字。真正 YouTube 測試另外驗證播放時間、跳播與下一首播放；WebKit iPhone 模式不等於實體 iPhone Edge。
+驗證：`npm test` 共 13 項；`node scripts/youtube-browser-check.cjs` 共 19 組受控 API 介面檢查，涵蓋雙語預載、匯入／還原、偏移保存、跳播、同步、單句及 A–B 循環、播放受阻、XSS 文字處理與手機／200% 文字。真正 YouTube 測試另外驗證播放時間、跳播與下一首播放；WebKit iPhone 模式不等於實體 iPhone Edge。
 
 ```sh
 node scripts/youtube-browser-check.cjs
@@ -92,4 +92,8 @@ node scripts/youtube-live-check.cjs
 VAUNDY_BROWSER=webkit node scripts/youtube-live-check.cjs
 ```
 
-本機：`npm start`，開啟 http://localhost:4174/youtube.html 。YouTube iframe 需要 HTTP 來源與 referrer。建置包含實驗版 6 個資產，YouTube iframe API 不需要本站帳號或 API Key。
+本機：`npm start`，開啟 http://localhost:4174/youtube.html 。YouTube iframe 需要 HTTP 來源與 referrer。建置包含實驗版 7 個資產，YouTube iframe API 不需要本站帳號或 API Key。
+
+漢字上方讀音使用原生 `<ruby><rb>漢字</rb><rt>讀音</rt></ruby>`，預設顯示、可用「顯示讀音」切換；切換不改歌詞、翻譯或時間軸。`youtube-readings.js` 依 marumaru 的逐句標音對齊使用者提供的日文，保留〈再会〉「超→super」「隅→すき」等特殊唱法。〈soramimi〉參考 UtaTen；部分缺字由 UtaTen 補充。參考頁使用假名、原檔使用漢字等差異，另補一般讀音並標示為本站補充，沒有宣稱逐首實聽驗證所有唱法。匯入文字完全符合已核對的日文句子時，也可使用該句讀音。
+
+維護標音：`python3 scripts/build-readings.py` 讀取本機 `research/` 的參考頁快照，輸出只有原檔文字與讀音的結構化片段；不發布原站 HTML。對齊以逐句內容優先，單字補充只接受該歌讀音無歧義的詞；不將「上手」錯拆成「上／手→て」。`EDITOR_READINGS` 列出本站補充的普通讀音。輸出報告位於忽略的 `research/readings-report.json`；執行 `npm test` 會檢查原文完整保留、所有漢字覆蓋與特殊唱法，DOM 以 `textContent` 建立標音。
