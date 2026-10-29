@@ -20,7 +20,7 @@ GitHub 儲存庫：https://github.com/swe-troye/vaundy-listening-guide
 - 慢慢讀／演前速讀，三語歌名搜尋、主題篩選、收藏與手動已讀。
 - 桌面目錄、手機目錄、歌曲深連結；儲存受限仍可閱讀。
 - 逐首導聆提供摘要／深入／聆聽三分頁，前後首、章節搜尋、鍵盤與左右滑動。
-- Spotify曲目播放器保留歌單版本；採官方 iFrame API 控制同一個播放器，按一次開始後翻頁自動播放選定歌曲，暫停後翻頁保持暫停。完整播放或試聽依帳號、地區與瀏覽器支援而異。
+- 試聽播放器保留歌單版本，使用 Spotify 公開的約 30 秒音訊；按一次開始後翻頁自動接續，暫停後翻頁保持暫停。完整歌曲使用 Spotify 連結開啟。
 
 2026/10/29 已讀24首完整日文原文與23首外部中文對照。〈soramimi〉未取得完整外部中譯，依完整日文撰寫摘要並單獨標示。內容為原創中文整理，不轉貼完整歌詞或逐句翻譯；編輯延伸不視為作者正式解說。原文來源主要為UtaTen，〈気まぐれ〉使用marumaru原文與中譯；外部中譯不自動視為官方翻譯。
 
@@ -50,13 +50,21 @@ GitHub Pages 使用 main 分支根目錄發布。修改後執行測試及建置�
 
 方法已回查 Kaze 原始 session `rollout-2026-10-28T11-14-29-01a18080-87e8-77e3-bb61-181004bf314b.jsonl`：2026-10-28 16:08 UTC 直接寫入 SVG 原始碼，後由提交 `db5a608` 收錄。Kaze README 也補上製作方式。未把 session 原文、帳號資料或憑證複製到專案。
 
-## 自動播放
+## 自動播放（iPhone 修正）
 
-`player.js` 使用 Spotify 官方 https://open.spotify.com/embed/iframe-api/v1 ，透過 `createController`、`loadEntity`、`play`、`pause` 與播放事件切歌，不模擬跨網站按鈕點擊。此嵌入 API 不需 Spotify API Key 或 OAuth。首次進站由使用者按「開始播放」或播放器的 ▶，之後翻頁保留播放意圖；手動暫停後保持暫停。切換摘要分頁不重載播放器，快速翻頁只載入最後選定的歌曲。
+`player.js` 使用同一個原生 `HTMLAudioElement`，播放 `previews.js` 所列的24首 Spotify 公開試聽音訊。音訊網址由原歌單公開embed的 `audioPreview.url` 取得，與歌單曲目ID逐一對應；僅保留 `https://p.scdn.co/mp3-preview/` 路徑，無 query、工作階段 token、OAuth 或 API Key。24個網址均已確認回傳 audio/mpeg。
 
-播放狀態以 Spotify 的 `playback_started`／`playback_update` 回報為準。若瀏覽器阻擋播放，頁面提示點播放器重試；API 無法載入時回退普通 embed，外部 Spotify 連結始終可用。未登入 Edge 實測提供約 30 秒預覽，無法用此方法保證完整歌曲或所有瀏覽器無操作播放。
+這是約30秒的試聽連播，長度依該段音訊而定，並非完整歌曲。每首對應的「在Spotify聽」連結保留，開啟時暫停網站試聽。首次進站由使用者按一次開始，之後手動翻頁或音訊 `ended` 事件接續下一首；暫停後翻頁保持暫停。切換導聆標籤不改動音訊元素。播放進度確實前進時才顯示播放中；載入、緩衝、被瀏覽器拒絕、連線失敗或取消均有獨立狀態。
 
-官方參考：https://developer.spotify.com/documentation/embeds/references/iframe-api 。實際播放檢查：啟動 `npm start` 後執行 `node scripts/playback-check.cjs`（需要本機 Edge 與 Playwright Core），用播放位置前進核對首次播放與換歌。
+前版使用 Spotify iFrame API，在桌面 Edge 測試可行，但使用者回報 iPhone Edge 換歌不出聲。iPhone Edge 使用WebKit；已在WebKit的iPhone模式重現前版下一首卡在緩衝，按鈕卻顯示暫停。新版避免換歌重載第三方iframe，保留同一個音訊元素及首次播放授權；不再以Spotify事件或播放意圖推定音訊已在播放。
 
+驗證：6項資料／核心測試與21組Edge版面回歸通過。WebKit iPhone模式已確認首次不強制出聲、按一次播放、換歌後真正音訊時間前進、暫停後換歌不播，以及播放整段試聽後自動接下一首。這是桌面WebKit的iPhone模式，不是實體iPhone測試；實體裝置仍可能因低耗電、背景分頁或播放權限限制，需要再按一次。
 
-2026/10/29 新版驗證：5項資料測試、建置、21組 Edge 版面／互動回歸全部通過，無頁面 JavaScript 錯誤；已檢視桌面及320／390px手機構圖。真實 Spotify 測試確認首次不強制出聲、按一次開始播放、換歌播放位置前進、暫停後換歌不播、預覽到期接下一首並出聲。`playback_update` 的結束狀態可能維持 `isPaused=false`，實作依實際 `position===duration` 判斷。
+啟動 `npm start` 後執行：
+
+```sh
+node scripts/playback-check.cjs
+VAUNDY_BROWSER=webkit node scripts/playback-check.cjs
+```
+
+檢查腳本使用 Playwright Core。Edge 走本機應用程式；WebKit可用 `PLAYWRIGHT_BROWSERS_PATH` 指定已安裝瀏覽器，本次下載在 `/private/tmp/vaundy-browsers`。測試以 `audio.currentTime` 前進和 `paused` 狀態核對，另模擬 `NotAllowedError` 及一直pending的播放要求，確認不會誤顯示播放中。

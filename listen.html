@@ -7,12 +7,13 @@
   <meta name="description" content="用 Vaundy 動漫人像與橫式章節，逐首走進 HORO 歌單的 24 首歌。歌曲大意、意境與來源，一頁一首慢慢翻。">
   <title>動漫導聆 · Vaundy，在歌裡</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="listen.css">
+  <link rel="stylesheet" href="listen.css?v=iphone-audio-2">
   <link rel="preload" href="assets/vaundy-guide.svg" as="image" type="image/svg+xml">
   <script src="data.js" defer></script>
   <script src="core.js" defer></script>
-  <script src="player.js" defer></script>
-  <script src="listen.js" defer></script>
+  <script src="previews.js?v=iphone-audio-2" defer></script>
+  <script src="player.js?v=iphone-audio-2" defer></script>
+  <script src="listen.js?v=iphone-audio-2" defer></script>
 </head>
 <body data-scene="sky" data-palette="mint">
   <a class="skip" href="#slide-title">跳到歌曲</a>
@@ -59,8 +60,8 @@
       <div id="page-turn" class="page-turn" aria-hidden="true"></div>
     </main>
     <section class="music-dock" aria-labelledby="music-title">
-      <div id="spotify-player" class="spotify-player"></div>
-      <div class="music-meta"><button id="play-toggle" class="play-toggle" type="button" disabled>播放器載入中</button><p id="playback-status" class="spotify-instruction" role="status">按一次播放，翻頁時自動接著聽。</p><a id="spotify-open" class="spotify-open" href="https://open.spotify.com/track/22D3hqjQ8R7t29wp6Gy44W" target="_blank" rel="noopener noreferrer">在 Spotify 聽 ↗<span class="sr-only">（在新分頁開啟）</span></a></div>
+      <div id="spotify-player" class="preview-player"><div class="preview-heading"><strong id="preview-title">泣き地蔵</strong><span>約 30 秒試聽</span></div><audio id="preview-audio" controls playsinline preload="none" aria-label="歌曲試聽播放器"></audio></div>
+      <div class="music-meta"><button id="play-toggle" class="play-toggle" type="button" disabled>▶ 開始試聽</button><p id="playback-status" class="spotify-instruction" role="status">按一次開始試聽，翻頁時接著聽。</p><a id="spotify-open" class="spotify-open" href="https://open.spotify.com/track/22D3hqjQ8R7t29wp6Gy44W" target="_blank" rel="noopener noreferrer">在 Spotify 聽 ↗<span class="sr-only">（在新分頁開啟）</span></a></div>
     </section>
     <footer class="anime-footer">
       <div class="journey"><p><strong id="journey-count">01</strong><span> / 24 首</span><span class="journey-caption">一首，一段風景。</span></p><div id="journey-track" class="journey-track" aria-hidden="true"></div></div>

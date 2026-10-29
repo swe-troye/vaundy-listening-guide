@@ -97,6 +97,7 @@
     if (direction) animate(direction);
   }
   const player = window.VaundyPlayer.create({host:$('spotify-player'),button:$('play-toggle'),status:$('playback-status')});
+  $('spotify-open').addEventListener('click',()=>player.pause());
   function renderPlayer(song) {
     $('spotify-open').href = `https://open.spotify.com/track/${song.spotifyTrackId}`;
     $('spotify-open').setAttribute('aria-label',`在 Spotify 聽 ${song.name}（在新分頁開啟）`);

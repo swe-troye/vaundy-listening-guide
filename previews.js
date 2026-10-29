@@ -1,0 +1,27 @@
+// Public Spotify preview URLs only; no session token or client credentials.
+window.VAUNDY_PREVIEWS = {
+  "22D3hqjQ8R7t29wp6Gy44W": "https://p.scdn.co/mp3-preview/ae8303f42894c199bd5c75cdc3b1d11b90de3878",
+  "3CmVQtVx9KlzOuPhRJRShH": "https://p.scdn.co/mp3-preview/f433d25f8b9b0d05a044513685ced3aab6fb7b95",
+  "0KmWLURMOpAqYwetgdScXk": "https://p.scdn.co/mp3-preview/c6e3836121d85268456d1443e9149a902f60ae36",
+  "7c1icp8E7aYG90vA3wo3Se": "https://p.scdn.co/mp3-preview/fece4ad5fa75a18ea846061b1c74c0b0c615b0cd",
+  "3LZwKI90sFbwjJMMSfyPp7": "https://p.scdn.co/mp3-preview/baa42d0938e7a196feccd2f237b646612b2962c1",
+  "7lewMvWGv9HwIKV5Bwg1DF": "https://p.scdn.co/mp3-preview/c54092b7b1ce111ae0123f6c12b640e4b54b76e4",
+  "00GDUNeJd97qjKp2yrx0OC": "https://p.scdn.co/mp3-preview/2a8e6dc0147aabc0aed61ea14fd11bffd18f94fd",
+  "4DmmljTCS4ViQRSLCiMnOt": "https://p.scdn.co/mp3-preview/7ef28cdebb7fb006df8ba9948edb939f36588281",
+  "70Lmnyu93ANAXSteY6hVHH": "https://p.scdn.co/mp3-preview/fdca9e4ac6beacbda2c149f0e3ccc070d57afa0b",
+  "6C57BHEiqIaatLzFzqYx4e": "https://p.scdn.co/mp3-preview/72fdb1aa0597738ac75f3dad9e9111a1290b3e4f",
+  "7hDX39mc6Uf6zp8RXYUQ6d": "https://p.scdn.co/mp3-preview/5f44107f3c4b6a8e10b1e69e490c33a83eb61f4f",
+  "3jNwPOqdPvQIr5dRT0hzgY": "https://p.scdn.co/mp3-preview/cc0900f66bb77a5926b9dcecafa5abcea563ec62",
+  "7ytwCwjXrrgXmpC9Leaw7n": "https://p.scdn.co/mp3-preview/3c6864bbcda092a911ebf33027f4abbfedce0149",
+  "4GcZ4EFvUBQ2wgBiUhwPKI": "https://p.scdn.co/mp3-preview/cecdb2c5f9cfbdafbf7b16a332791c89c1fd4f4b",
+  "3RqT5175BrzANXK3yaafEm": "https://p.scdn.co/mp3-preview/2419487c5502eb2fd878c81619eea0ff9414c765",
+  "4nsrIXDihSYr8eb56j015A": "https://p.scdn.co/mp3-preview/4136a63570511abfb1b0794b4e5b50a71030f4d1",
+  "3kQf453SpkwX7ALdgzNSNY": "https://p.scdn.co/mp3-preview/4ec1f124396502d6b207ad0d130c1d49772ce240",
+  "2NFgZXeRjcqV91SaBIZ3cI": "https://p.scdn.co/mp3-preview/81e54bf45bbd93e791d3a1535199cb955c559eb4",
+  "3aXXsS4RWTEYmqfXY3R2tD": "https://p.scdn.co/mp3-preview/4ce194d2873ab9714e2632bc8991c316eb590005",
+  "3lUOzabhWYyRImRszpJGOU": "https://p.scdn.co/mp3-preview/e5113d47604b98a2fc6e2f66692b109d104a865b",
+  "3e0Td8QexmD5l3DJzXbbcC": "https://p.scdn.co/mp3-preview/4a884445586bdb93daf69be6fb04a6906539066f",
+  "4vAEVgav2dRGNNJNxFJerv": "https://p.scdn.co/mp3-preview/7bd340006bde95c893d0acd320a60bd4b833d433",
+  "26H7pT0IHTko0AA3A35S73": "https://p.scdn.co/mp3-preview/2e9eba9d4cb74ac068c09a3fdeacb945d0e882f8",
+  "1uK4zAdMcBRyinAOArUA5X": "https://p.scdn.co/mp3-preview/3b115e56d65fa6dab3c74b412f513d106ce578ea"
+};

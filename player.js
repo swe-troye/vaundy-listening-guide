@@ -1,101 +1,74 @@
 (() => {
   'use strict';
   window.VaundyPlayer = {create({host,button,status}) {
-    let song, controller, api, mode='loading', ready=false, wanted=false, playing=false;
-    let loadedId, switchTimer, attemptTimer, lastPosition=0, nearEnd=false, ended=false;
-    const player={select,onEnded:null};
-    const uri=()=>`spotify:track:${song.spotifyTrackId}`;
-    const label=()=>{button.textContent=wanted?'❚❚ 暫停':'▶ 開始播放';button.disabled=mode!=='api'||!ready;};
-    function finish() {
-      if(ended||!wanted)return;
-      ended=true;playing=false;clearTimeout(attemptTimer);
-      if(!player.onEnded?.()){wanted=false;label();status.textContent='這段播放已結束 · 按播放再聽一次。';}
+    const audio=host.querySelector('audio'), title=host.querySelector('strong');
+    let song, wanted=false, playing=false, pending=false, switching=false, request=0, timer, previousTime=0;
+    const player={select,pause:stop,onEnded:null};
+    const url=()=>window.VAUNDY_PREVIEWS?.[song.spotifyTrackId];
+    const current=()=>audio.currentSrc===url();
+    function label() {
+      button.disabled=!song||!url();
+      button.textContent=playing?'❚❚ 暫停':pending?'取消播放':'▶ 開始試聽';
     }
-    function decorate() {
-      const frame=host.querySelector('iframe');
-      if(frame){frame.title=`Spotify 播放器：${song.name}`;frame.allow='autoplay; encrypted-media; fullscreen; picture-in-picture';}
+    function stop() {
+      request++;clearTimeout(timer);wanted=false;pending=false;playing=false;audio.pause();label();
     }
-    function fallback() {
-      if(mode==='api')return;
-      mode='fallback';clearTimeout(switchTimer);
-      const frame=document.createElement('iframe');frame.src=`https://open.spotify.com/embed/track/${song.spotifyTrackId}?theme=0`;
-      host.replaceChildren(frame);decorate();button.disabled=true;button.textContent='點播放器的 ▶';
-      status.textContent='自動播放暫時無法連線，可點播放器聽或在 Spotify 開啟。';
+    function failed(error,id) {
+      if(id!==request)return;
+      clearTimeout(timer);wanted=false;pending=false;playing=false;label();
+      status.textContent=error?.name==='NotAllowedError'?'請再按一次開始試聽，允許瀏覽器播放。':'試聽暫時無法播放，可再按一次或到 Spotify 聽。';
     }
-    function requestPlay() {
-      if(!controller||!wanted||!ready)return;
-      status.textContent='正在開始播放…';controller.play();clearTimeout(attemptTimer);
-      const id=song.spotifyTrackId;
-      attemptTimer=setTimeout(()=>{
-        if(song.spotifyTrackId===id&&!playing&&wanted){status.textContent='若尚未出聲，請點播放器的 ▶；瀏覽器可能需要允許播放。';}
-      },8000);
-    }
-    function load() {
-      if(!song)return;
-      if(mode==='fallback'){fallback();return;}
-      if(!controller)return;
-      if(loadedId===song.spotifyTrackId)return;
-      loadedId=song.spotifyTrackId;ready=false;playing=false;lastPosition=0;nearEnd=false;ended=false;label();
-      status.textContent=wanted?'換歌中，將自動接著播放…':'按一次播放，翻頁時自動接著聽。';
-      controller.loadEntity(uri());decorate();
+    function play() {
+      const id=++request;
+      wanted=true;pending=true;playing=false;label();status.textContent='正在載入試聽…';clearTimeout(timer);
+      // Keep this call in the click/next handler; never defer the user gesture to a ready event.
+      const result=audio.play();
+      result?.catch(error=>failed(error,id));
+      timer=setTimeout(()=>{
+        if(id===request&&!playing){stop();status.textContent='試聽尚未開始，請再按一次；也可到 Spotify 聽。';}
+      },12000);
     }
     function select(next) {
       if(song?.spotifyTrackId===next.spotifyTrackId)return;
-      clearTimeout(switchTimer);clearTimeout(attemptTimer);
-      // Stop old audio immediately, then coalesce rapid page changes.
-      if(controller&&playing)controller.pause();song=next;playing=false;ready=false;label();
-      if(api&&!controller)mount();
-      else switchTimer=setTimeout(load,120);
-    }
-    function mount() {
-      if(!song||controller||mode==='fallback')return;
-      clearTimeout(apiTimeout);host.replaceChildren();const mount=document.createElement('div');host.append(mount);
-      const initialId=song.spotifyTrackId;
-      api.createController(mount,{uri:uri(),width:'100%',height:80},c=>{
-        controller=c;mode='api';loadedId=initialId;decorate();
-        c.addListener('ready',()=>{
-          // Ignore a ready event from a superseded iframe navigation.
-          if(loadedId!==song.spotifyTrackId){load();return;}
-          const src=host.querySelector('iframe')?.src||'';
-          if(!src.includes(song.spotifyTrackId))return;
-          ready=true;label();decorate();if(wanted)requestPlay();
-        });
-        c.addListener('playback_started',event=>{
-          if(event.data.playingURI!==uri())return;
-          playing=true;wanted=true;clearTimeout(attemptTimer);label();
-          status.textContent='播放中 · 翻頁自動接著聽，播放長度依 Spotify 支援。';
-        });
-        c.addListener('playback_update',event=>{
-          const d=event.data;
-          if(d.playingURI!==uri()||loadedId!==song.spotifyTrackId)return;
-          if(d.isBuffering){status.textContent='Spotify 緩衝中…';return;}
-          if(d.duration>0&&d.position>=d.duration-1200)nearEnd=true;
-          // Spotify previews can report position === duration while isPaused stays false.
-          if(d.duration>0&&d.position>=d.duration&&wanted){finish();return;}
-          if(d.isPaused) {
-            const finished=nearEnd&&d.position===0&&lastPosition>0;
-            playing=false;
-            if(finished&&wanted){finish();return;}
-            if(d.position>0){wanted=false;clearTimeout(attemptTimer);label();status.textContent='已暫停 · 按播放繼續聽。';}
-          } else if(d.position>0) {
-            playing=true;wanted=true;clearTimeout(attemptTimer);label();
-            status.textContent='播放中 · 翻頁自動接著聽，播放長度依 Spotify 支援。';
-          }
-          lastPosition=d.position;
-        });
-        c.addListener('error',()=>{clearTimeout(attemptTimer);playing=false;wanted=false;label();status.textContent='Spotify 暫時無法播放，請點播放器重試或在 Spotify 開啟。';});
-        if(loadedId!==song.spotifyTrackId)load();
-      });
+      const continuePlaying=wanted;
+      request++;clearTimeout(timer);switching=true;playing=false;pending=false;previousTime=0;
+      audio.pause();song=next;title.textContent=song.name;audio.setAttribute('aria-label',`${song.name} · 約 30 秒試聽`);
+      if(!url()){wanted=false;audio.removeAttribute('src');audio.load();label();status.textContent='這首暫無公開試聽，請到 Spotify 聽。';return;}
+      // The same HTMLAudioElement retains the listener's playback permission on WebKit.
+      audio.src=url();audio.load();label();
+      if(continuePlaying)play();else status.textContent='約 30 秒試聽 · 按一次開始，翻頁接著聽。';
     }
     button.addEventListener('click',()=>{
-      if(!controller||!ready)return;
-      wanted=!wanted;label();
-      if(wanted){ended=false;nearEnd=false;requestPlay();}
-      else{playing=false;clearTimeout(attemptTimer);controller.pause();status.textContent='已暫停 · 按播放繼續聽。';}
+      if(!song||!url())return;
+      if(playing||pending){stop();status.textContent='已暫停 · 按開始試聽繼續。';}
+      else play();
     });
-    const apiTimeout=setTimeout(fallback,12000);
-    window.onSpotifyIframeApiReady=nextApi=>{api=nextApi;mount();};
-    const script=document.createElement('script');script.src='https://open.spotify.com/embed/iframe-api/v1';script.async=true;script.onerror=fallback;document.body.append(script);
-    return player;
+    audio.addEventListener('loadedmetadata',()=>{if(current())switching=false;});
+    audio.addEventListener('play',()=>{
+      if(!current())return;
+      wanted=true;pending=true;label();
+    });
+    audio.addEventListener('timeupdate',()=>{
+      if(!current()||audio.paused||audio.ended)return;
+      // A play request or a provider event is not evidence of audible progress.
+      if(audio.currentTime>previousTime&&audio.currentTime>0){
+        wanted=true;playing=true;pending=false;clearTimeout(timer);label();
+        status.textContent='試聽播放中 · 播完自動下一首。';
+      }
+      previousTime=audio.currentTime;
+    });
+    audio.addEventListener('waiting',()=>{if(current()&&wanted){playing=false;pending=true;label();status.textContent='試聽緩衝中…';}});
+    audio.addEventListener('pause',()=>{
+      if(switching||!current()||audio.ended||!audio.paused)return;
+      stop();status.textContent='已暫停 · 按開始試聽繼續。';
+    });
+    audio.addEventListener('ended',()=>{
+      if(!current())return;
+      clearTimeout(timer);playing=false;pending=false;
+      if(wanted&&player.onEnded?.())return;
+      wanted=false;label();status.textContent='試聽已結束 · 按開始試聽再聽一次。';
+    });
+    audio.addEventListener('error',()=>{if(current())failed(audio.error,request);});
+    label();return player;
   }};
 })();

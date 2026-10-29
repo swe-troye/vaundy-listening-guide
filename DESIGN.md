@@ -26,6 +26,6 @@
 
 ## 播放器
 
-以 `player.js` 包裝 Spotify 官方 iFrame API，保留同一個 iframe／controller。首次按一次後保存本次瀏覽的播放意圖，換首立即停止已播放的舊歌曲、120ms合併快速切換，ready後要求播放。暫停後切換保持暫停，不把未載入的歌曲送出pause指令。播放狀態與進度依官方事件回報；播放位置達到實際duration時接下一首，最後一首停下。首次不強制出聲，瀏覽器限制時提示點播放器，API失敗回退普通embed。
+使用同一個原生HTMLAudioElement播放Spotify公開約30秒試聽，名稱與試聽長度標示在控制列上。首次按一次取得播放授權，換歌同步更新src並要求play；WebKit不需重載跨來源iframe。真正timeupdate前進才顯示播放中；載入和緩衝顯示取消播放，失敗回到開始試聽，不以想播放的狀態取代實際狀態。原生controls支援進度、音量與暫停，原生ended事件接下一首，最後一首停下。「在Spotify聽」開啟完整歌曲時暫停試聽。
 
-角色650ms、正文420ms、斜切480ms、日光700ms動畫與Kaze相同，快速切換取消上次動畫；prefers-reduced-motion停用。
+錯誤提示在手機亦可見。6項資料測試、21組Edge回歸，以及WebKit iPhone模式的真實試聽切換均已驗證；實體裝置仍可能存在播放權限限制。角色650ms、正文420ms、斜切480ms、日光700ms動畫與Kaze相同，快速切換取消上次動畫；prefers-reduced-motion停用。

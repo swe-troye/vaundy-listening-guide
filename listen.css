@@ -254,3 +254,13 @@ dialog::backdrop { background: oklch(.19 .03 250 / .7); }
 #slide-title { font-size: clamp(1.75rem,3.4vw,3.5rem); }
 @media (max-width: 1100px) and (orientation: portrait) { .music-meta { flex-wrap: wrap; } }
 @media (max-width: 1100px) and (orientation: portrait) { #slide-title { font-size: 2rem; } }
+
+.preview-player { min-width: 0; display: flex; flex-direction: column; gap: .375rem; }
+.preview-heading { display: flex; align-items: baseline; gap: 1rem; justify-content: space-between; color: var(--shell-text); }
+.preview-heading strong { font-size: .875rem; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.preview-heading span { font-size: .875rem; white-space: nowrap; color: var(--shell-muted); }
+#preview-audio { display: block; width: 100%; height: 44px; color-scheme: dark; }
+
+/* Playback failures remain visible on phones instead of hiding with the old embed hint. */
+#playback-status { position: static; width: auto; height: auto; overflow: visible; clip-path: none; white-space: normal; }
+@media (max-width: 1100px) and (orientation: portrait) { #playback-status { order: 3; flex-basis: 100%; margin: 0; } }

@@ -1,32 +1,15 @@
+process.env.PLAYWRIGHT_BROWSERS_PATH ||= '/private/tmp/vaundy-browsers';
 const assert=require('node:assert/strict');
-const {chromium}=require('/Users/troye/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core');
-(async()=>{
- const b=await chromium.launch({executablePath:'/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge',headless:true});
- try {
- const p=await b.newPage();const errors=[];p.on('pageerror',e=>errors.push(e.message));
- await p.addInitScript(()=>{
-  window.audit=[];let callback;
-  Object.defineProperty(window,'onSpotifyIframeApiReady',{configurable:true,get:()=>callback,set:fn=>{callback=api=>{
-   const create=api.createController.bind(api);api.createController=(el,options,cb)=>create(el,options,c=>{
-    ['playback_started','playback_update'].forEach(n=>c.addListener(n,e=>window.audit.push({event:n,data:e.data})));
-    cb(c);
-   });fn(api);
-  };}});
- });
- await p.goto((process.env.VAUNDY_SITE_URL||'http://localhost:4174/')+'listen.html#song-naki-jizo');
- await p.waitForFunction(()=>!document.querySelector('#play-toggle').disabled);
- await p.waitForTimeout(1500);assert.equal(await p.evaluate(()=>window.audit.some(e=>e.event==='playback_started')),false);console.log('PASS no forced audio on first visit');
- await p.click('#play-toggle');
- async function advancing(id){await p.waitForFunction(id=>window.audit.some(e=>e.data.playingURI==='spotify:track:'+id&&e.data.position>1500),id,{timeout:25000});console.log('PASS audio position advances',id);}
- await advancing('22D3hqjQ8R7t29wp6Gy44W');
- const old=await p.locator('#spotify-player iframe').elementHandle();
- await p.click('#next');await advancing('3CmVQtVx9KlzOuPhRJRShH');assert.equal(await old.evaluate(e=>e.isConnected),true);console.log('PASS persistent iframe auto-plays on chapter change');
- await p.click('#play-toggle');await p.click('#next');await p.waitForFunction(()=>!document.querySelector('#play-toggle').disabled);await p.waitForTimeout(2500);
- assert.equal(await p.evaluate(()=>window.audit.some(e=>e.data.playingURI==='spotify:track:'+window.VAUNDY_SONGS[2].spotifyTrackId&&!e.data.isPaused&&e.data.position>0)),false);
- assert.match(await p.locator('#play-toggle').innerText(),/開始播放/);console.log('PASS paused navigation remains paused');
- await p.click('#play-toggle');const id=await p.evaluate(()=>window.VAUNDY_SONGS[2].spotifyTrackId);await advancing(id);
- console.log('WAIT natural preview end');await p.waitForFunction(()=>document.querySelector('#slide-title').textContent==='再会',null,{timeout:45000});
- const nextId=await p.evaluate(()=>window.VAUNDY_SONGS[3].spotifyTrackId);await advancing(nextId);console.log('PASS natural end advances chapter and starts next song');assert.deepEqual(errors,[]);
- const offline=await b.newPage();await offline.route('https://open.spotify.com/embed/iframe-api/v1',r=>r.abort());await offline.goto((process.env.VAUNDY_SITE_URL||'http://localhost:4174/')+'listen.html#song-naki-jizo');await offline.waitForSelector('#spotify-player iframe');assert.match(await offline.locator('#play-toggle').innerText(),/點播放器/);await offline.click('#next');await offline.waitForFunction(()=>document.querySelector('#spotify-player iframe')?.src.includes('3CmVQtVx9KlzOuPhRJRShH'));assert.equal(await offline.locator('iframe').count(),1);assert.equal(await offline.locator('#guide-character').evaluate(e=>e.complete&&e.naturalWidth>0),true);console.log('PASS API failure retains illustrated page and falls back to exact track embed');
- }finally{await b.close();}
-})().catch(e=>{console.error(e);process.exitCode=1;});
+const {webkit,chromium}=require('/Users/troye/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core');
+(async()=>{const engine=process.env.VAUNDY_BROWSER==='webkit'?webkit:chromium;const b=await engine.launch({headless:true,...(engine===chromium?{executablePath:'/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge'}:{})});try{
+ const p=await b.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true,userAgent:'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) EdgiOS/131.0 Mobile/15E148 Safari/605.1.15'});const errors=[];p.on('pageerror',e=>errors.push(e.message));
+ await p.goto((process.env.VAUNDY_SITE_URL||'http://localhost:4174/')+'listen.html#song-naki-jizo');const audio=await p.locator('audio').elementHandle();
+ assert.equal(await audio.evaluate(e=>e.paused),true);await p.click('#play-toggle');
+ const advancing=async id=>{await p.waitForFunction(id=>{const a=document.querySelector('audio');return a.src===window.VAUNDY_PREVIEWS[id]&&!a.paused&&a.currentTime>1.5;},id,{timeout:20000});console.log('PASS actual audio advances',id);};
+ await advancing('22D3hqjQ8R7t29wp6Gy44W');await p.click('#next');await advancing('3CmVQtVx9KlzOuPhRJRShH');assert.equal(await audio.evaluate(e=>e.isConnected),true);console.log('PASS same audio element auto-plays next track in '+engine.name());
+ await p.click('#play-toggle');await p.click('#next');await p.waitForTimeout(1800);assert.equal(await audio.evaluate(e=>e.paused),true);assert.match(await p.locator('#play-toggle').innerText(),/開始試聽/);console.log('PASS paused navigation stays paused');
+ await p.click('#play-toggle');await advancing(await p.evaluate(()=>window.VAUNDY_SONGS[2].spotifyTrackId));await p.evaluate(()=>{const a=document.querySelector('audio');a.currentTime=a.duration-.4;});console.log('WAIT native ended event');
+ await p.waitForFunction(()=>document.querySelector('#slide-title').textContent==='再会',null,{timeout:45000});await advancing(await p.evaluate(()=>window.VAUNDY_SONGS[3].spotifyTrackId));console.log('PASS native audio end continues to next track');assert.deepEqual(errors,[]);await p.screenshot({path:process.env.VAUNDY_PLAYBACK_SCREENSHOT||'/private/tmp/vaundy-audio.png'});
+ const blocked=await b.newPage();await blocked.addInitScript(()=>{HTMLMediaElement.prototype.play=function(){return Promise.reject(new DOMException('Gesture required','NotAllowedError'));};});await blocked.goto((process.env.VAUNDY_SITE_URL||'http://localhost:4174/')+'listen.html');await blocked.click('#play-toggle');await blocked.waitForFunction(()=>document.querySelector('#playback-status').textContent.includes('請再按一次'));assert.match(await blocked.locator('#play-toggle').innerText(),/開始試聽/);assert.equal(await blocked.locator('audio').evaluate(a=>a.paused),true);console.log('PASS denied playback is shown as stopped, not playing');
+ const stalled=await b.newPage();await stalled.addInitScript(()=>{HTMLMediaElement.prototype.play=function(){return new Promise(()=>{});};});await stalled.goto((process.env.VAUNDY_SITE_URL||'http://localhost:4174/')+'listen.html');await stalled.click('#play-toggle');assert.match(await stalled.locator('#playback-status').innerText(),/載入/);assert.match(await stalled.locator('#play-toggle').innerText(),/取消/);await stalled.click('#play-toggle');assert.match(await stalled.locator('#play-toggle').innerText(),/開始試聽/);console.log('PASS a pending play request never claims active playback and can be cancelled');
+}finally{await b.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

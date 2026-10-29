@@ -86,3 +86,8 @@
 
 - Spotify 官方 iFrame API：https://developer.spotify.com/documentation/embeds/references/iframe-api 。控制播放、暫停、切換曲目與依事件判斷狀態；首次播放仍受瀏覽器政策限制。
 - 原創插畫 `assets/vaundy-guide.svg`：直接編寫SVG，無外部圖片、生圖API或API Key；Kaze方法回查與檔案來源記於README。
+
+
+## iPhone 試聽連播來源
+
+24首公開預覽取自使用者提供的Spotify歌單embed的audioPreview欄位，依playlist-snapshot.json的曲目ID逐一對應。安全過濾後的URL見previews.js，僅含p.scdn.co/mp3-preview音訊路徑，不含token、client credentials或URL query。2026/10/29逐一核對24個來源均回傳audio/mpeg。網站播放公開試聽片段，完整歌曲由每首Spotify連結開啟。播放器現行方式見README「自動播放（iPhone修正）」；先前iFrame API為歷史版本。

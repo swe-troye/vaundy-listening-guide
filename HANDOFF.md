@@ -22,3 +22,10 @@ research/為不發布的研究快取；其中可能包括來源網站工作階�
 回查Kaze session rollout-2026-10-28T11-14-29-01a18080-87e8-77e3-bb61-181004bf314b.jsonl確認原圖是直接編寫SVG，非Image API。Vaundy沿用此方法另畫人像，兩站README均記錄方式。未使用API Key、imagegen CLI或外部生成圖片。
 
 Spotify使用官方createController/loadEntity/play/pause與事件。初次按一次才播，翻頁接續，暫停保留；播放到duration可接下一首，最後一首停止。預覽實測可能回報isPaused=false但position===duration，不能只依isPaused判断結束。SDK完整歌曲需要其他帳號條件，不能把約30秒未登入預覽說成全曲。API與一般embed皆不要求本站API金鑰。
+
+
+## iPhone Edge 自動播放回報與修正（現行實作）
+
+使用者回報下一首顯示播放但沒出聲，裝置為iPhone Edge。WebKit iPhone模式已重現前版Spotify iframe換歌卡緩衝，按鈕仍顯示暫停。player.js現已全面改用同一HTMLAudioElement，previews.js載入24首原歌單公開audioPreview.url，沒有Spotify iframe/API控制；約30秒試聽，不是完整歌曲。預覽URL只保留p.scdn.co/mp3-preview路徑，24首依曲目ID對應且HTTP音訊已驗證，未保存工作階段token或URL query。
+
+同步src/play保留首次手勢，timeupdate前進才標播放中，pending表示載入、可取消；NotAllowedError、網路/解碼錯誤有提示。原生ended接下一首，暫停保留，開啟Spotify連結會停止試聽。所有錯誤提示在手機可見。測試以實際audio.currentTime/paused核對，已在WebKit iPhone模式確認整段播完接下一首；不是實體iPhone驗證。前面iFrame API筆記僅為舊版歷史，勿恢復為現行實作。
