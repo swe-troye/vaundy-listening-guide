@@ -1,6 +1,6 @@
 (() => {
   'use strict';
-  const songs=window.VAUNDY_SONGS, videos=window.VAUNDY_VIDEOS;
+  const songs=window.VAUNDY_SONGS, videos=window.VAUNDY_VIDEOS, lyrics=window.VAUNDY_LRC||{};
   const {parseLRC,activeIndex,formatTime}=window.VaundyTimeline;
   const {escapeHTML:e,filterSongs}=window.VaundyCore;
   const $=id=>document.getElementById(id);
@@ -9,6 +9,7 @@
   let following=true,singleLoop=false,loopCue=-1,pointA=null,pointB=null,lastTime=-1,sourceDuration=0;
   let guardTimer,apiTimer,pollTimer;
   const song=()=>songs[index],video=()=>videos[song().id];
+  const bundled=()=>lyrics[song().id];
   const storageKey=()=>`vaundy-youtube-lrc-v1-${video().videoId}`;
   const currentPlayer=()=>player?.getVideoData?.().video_id===video().videoId;
   function playbackLabel() {
@@ -43,11 +44,14 @@
       if(cue.secondary){const secondary=document.createElement('span');secondary.className='cue-secondary';secondary.textContent=cue.secondary;words.append(secondary);}
       button.append(time,words);$('timeline').append(button);
     }
-    $('content-kind').textContent=imported?`你匯入的 LRC · ${imported.name}`:'原創導聆提示 · 非逐句歌詞';
-    $('timeline-hint').textContent=imported?'點一句跳播。相同時間的多行文字會一起亮起；時間不合可在下方微調。':'先用原創導聆提示體驗同步。提示時間按影片段落配置；匯入 LRC 才是逐句歌詞對應。';
+    $('content-kind').textContent=imported?`你匯入的 LRC · ${imported.name}`:bundled()?'日文／中文逐句歌詞 · 原創繁中翻譯':'原創導聆提示 · 非逐句歌詞';
+    $('timeline-hint').textContent=imported||bundled()?'點一句跳播，日文與中文一起亮起；時間不合可在下方微調。':'先用原創導聆提示體驗同步。提示時間按影片段落配置；匯入 LRC 才是逐句歌詞對應。';
     $('remove-lrc').disabled=!imported;
     const bilingual=cues.some(c=>c.secondary);$('translation').disabled=!bilingual;
-    $('sync-status').textContent=`${cues.length} 個時間點${imported?' · 歌詞僅留在此瀏覽器':''}`;
+    $('sync-status').textContent=`${cues.length} 個時間點${imported?' · 匯入歌詞僅留在此瀏覽器':bundled()?' · LRC 尚未逐句實聽校正':''}`;
+    const s=song(),marumaru=s.sources.find(x=>x.url.includes('marumaru')),b=bundled();
+    $('lyrics-source-credit').textContent=imported?'目前顯示你匯入的 LRC，內容與翻譯以該檔案為準。':b?'日文歌詞／時間軸：你提供的 LRC（LRCLIB）；繁中：本站原創翻譯。':'本站原創中文導聆。';
+    $('lyrics-source-note').textContent=`${marumaru?'語意與翻譯風格參考：marumaru；參考頁翻譯署名請見原站。':'這首依你提供的日文原創翻譯，未取得 marumaru 中文對照。'}${!imported&&b?' 時間軸尚未逐句實聽校正，可依播放調整。':''}${s.id==='kaiju'?' marumaru 頁為原曲，播放與內建 LRC 為 replica 版。':''}`;
   }
   function setActive(time,scroll=true) {
     const next=activeIndex(cues,time,offset);if(next===active)return;
@@ -73,7 +77,7 @@
     if(wanted)player.playVideo();
   }
   function updateTimelineDuration(duration) {
-    if(imported||duration<=0||Math.abs(duration-sourceDuration)<1)return;
+    if(imported||bundled()||duration<=0||Math.abs(duration-sourceDuration)<1)return;
     sourceDuration=duration;cues=demoCues(duration);renderCues();
   }
   function tick() {
@@ -95,24 +99,23 @@
   }
   function restoreLRC() {
     imported=null;offset=0;
-    try{const saved=JSON.parse(localStorage.getItem(storageKey())||'null');if(saved&&typeof saved.text==='string'){imported={text:saved.text,name:String(saved.name||'本機 LRC')};cues=parseLRC(saved.text);offset=Math.max(-20,Math.min(20,Number(saved.offset)||0));}}catch{imported=null;}
-    if(!imported)cues=demoCues(durationHint());
+    try{const saved=JSON.parse(localStorage.getItem(storageKey())||'null');if(saved){if(typeof saved.text==='string'){const parsed=parseLRC(saved.text);imported={text:saved.text,name:String(saved.name||'本機 LRC')};cues=parsed;}offset=Math.max(-20,Math.min(20,Number(saved.offset)||0));}}catch{imported=null;offset=0;}
+    if(!imported)cues=bundled()?parseLRC(bundled().text):demoCues(durationHint());
     $('offset').value=String(offset);$('offset-value').textContent=`${offset.toFixed(1)} 秒`;sourceDuration=durationHint();renderCues();
   }
-  function saveLRC() {if(imported){try{localStorage.setItem(storageKey(),JSON.stringify({...imported,offset}));}catch{$('sync-status').textContent='歌詞在此分頁可用；瀏覽器無法保存，重開時請重新匯入。';}}}
+  function saveLRC() {try{localStorage.setItem(storageKey(),JSON.stringify(imported?{...imported,offset}:{bundled:true,offset}));}catch{$('sync-status').textContent='瀏覽器無法保存此次歌詞或時間微調，重開後請重新設定。';}}
   function renderSong() {
     const s=song(),v=video();$('song-number').textContent=`${String(index+1).padStart(2,'0')} / ${songs.length}`;
     $('song-title').textContent=s.name;$('song-reading').textContent=`${s.reading} / ${s.chinese}`;
     document.title=`${s.name} · YouTube 同步聆聽`;$('youtube-open').href=v.source;
     $('previous').disabled=index===0;$('next').disabled=index===songs.length-1;
-    $('sources').innerHTML=`<p><strong>影片：</strong>${e(v.title)}</p><p><strong>頻道：</strong>${e(v.channel)} · ${e(v.checkedAt)} 核對</p><p><a href="${e(v.source)}" target="_blank" rel="noopener noreferrer">官方 YouTube 影片 ↗</a></p><p>內建文字來自本站原創中文導聆；時間配置為閱讀提示。你匯入的 LRC 應對應這支影片，MV 的前奏、尾聲可能和串流錄音不同。</p>`;
+    const b=bundled();
+    $('sources').innerHTML=`<p><strong>影片：</strong>${e(v.title)}</p><p><strong>頻道：</strong>${e(v.channel)} · ${e(v.checkedAt)} 核對</p><p><a href="${e(v.source)}" target="_blank" rel="noopener noreferrer">官方 YouTube 影片 ↗</a></p>${b?`<p><strong>日文歌詞／時間軸：</strong>使用者提供的 ${e(b.providedFile)}（<a href="${e(b.sourceUrl)}" target="_blank" rel="noopener noreferrer">LRCLIB 原始紀錄 ↗</a>）</p><p><strong>中文：</strong>本站原創繁中翻譯；語意與風格參考 marumaru。時間軸尚未逐句實聽校正，請按播放微調。</p>`:'<p>內建文字為本站原創中文導聆。</p>'}`;
     const marumaru=s.sources.find(x=>x.url.includes('marumaru'));
     const original=s.sources.find(x=>x.kind==='original');
     $('marumaru-link').href=marumaru?.url||'https://www.marumaru-x.com/';
     $('lyrics-source-link').href=marumaru?.url||original.url;
     $('lyrics-source-link').textContent=marumaru?'在 marumaru 查看日文歌詞與中文翻譯 ↗':`日文原文：${original.name} ↗`;
-    $('lyrics-source-credit').textContent=marumaru?`歌詞／中文對照參考：marumaru${marumaru.credit?`；${marumaru.credit}`:'；翻譯署名請見原始頁。'}`:'這首尚未取得完整外部中文翻譯。';
-    $('lyrics-source-note').textContent=`逐句內容請至來源頁閱讀。本頁顯示原創導聆提示，或你匯入的 LRC。${s.id==='kaiju'?'此歌詞對照頁使用原曲，YouTube 播放為 replica 版。':''}`;
     clearLoop();restoreLRC();songList();setFollowing(true);$('time').textContent='00:00';$('duration').textContent='--:--';
   }
   function select(next) {
@@ -143,7 +146,7 @@
     try{if(file.size>512000)throw Error('檔案太大，請使用 500 KB 以內的 LRC。');const text=await file.text(),parsed=parseLRC(text);if(video().videoId!==selected)return;imported={text,name:file.name};cues=parsed;offset=0;clearLoop();renderCues();$('offset').value='0';$('offset-value').textContent='0.0 秒';saveLRC();setActive(ready?player.getCurrentTime():0,false);}catch(error){$('sync-status').textContent=error.message;}
     $('lrc-file').value='';
   });
-  $('remove-lrc').addEventListener('click',()=>{try{localStorage.removeItem(storageKey());}catch{}imported=null;offset=0;$('offset').value='0';$('offset-value').textContent='0.0 秒';cues=demoCues(sourceDuration);clearLoop();renderCues();});
+  $('remove-lrc').addEventListener('click',()=>{try{localStorage.removeItem(storageKey());}catch{}clearLoop();restoreLRC();setActive(ready?player.getCurrentTime():0,false);});
   $('youtube-open').addEventListener('click',()=>{if(ready)pause();});
   addEventListener('hashchange',()=>{const i=songs.findIndex(s=>`#song-${s.id}`===location.hash);if(i>=0)select(i);});
   document.addEventListener('keydown',event=>{

@@ -12,7 +12,7 @@ const server = http.createServer((req, res) => {
   catch { res.writeHead(400); return res.end('Invalid URL'); }
   const target = path.resolve(root, '.' + (pathname === '/' ? '/index.html' : pathname));
   if (!target.startsWith(root + path.sep)) { res.writeHead(403); return res.end('Forbidden'); }
-  const allowed = new Set(['index.html','standalone.html','style.css','data.js','core.js','app.js','favicon.svg','listen.html','listen-standalone.html','listen.css','listen.js','previews.js','player.js','assets/horo-poster.jpg','assets/vaundy-guide.svg','youtube.html','youtube.css','youtube.js','youtube-data.js','youtube-core.js']);
+  const allowed = new Set(['index.html','standalone.html','style.css','data.js','core.js','app.js','favicon.svg','listen.html','listen-standalone.html','listen.css','listen.js','previews.js','player.js','assets/horo-poster.jpg','assets/vaundy-guide.svg','youtube.html','youtube.css','youtube.js','youtube-data.js','youtube-lrc.js','youtube-core.js']);
   if (!allowed.has(path.relative(root,target))) { res.writeHead(404); return res.end('Not found'); }
   fs.readFile(target, (error, data) => {
     if (error) { res.writeHead(404); return res.end('Not found'); }

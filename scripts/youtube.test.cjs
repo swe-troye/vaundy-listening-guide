@@ -23,3 +23,18 @@ test('all 24 official video IDs are verified and preserve replica recordings',()
  assert.equal(Object.keys(videos).length,24);for(const song of songs){const v=videos[song.id];assert.match(v.videoId,/^[A-Za-z0-9_-]{11}$/);assert.match(v.channel,/^Vaundy/);assert.equal(v.source,'https://www.youtube.com/watch?v='+v.videoId);}
  assert.match(videos.gyakko.title,/replica/);assert.match(videos.kaiju.title,/replica/);
 });
+test('all supplied songs have bilingual timing within the selected studio recording',()=>{
+ const ctx={window:{}};for(const file of ['data.js','youtube-data.js','youtube-lrc.js'])vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8'),ctx);
+ const {VAUNDY_SONGS:songs,VAUNDY_VIDEOS:videos,VAUNDY_LRC:lyrics}=ctx.window;
+ assert.equal(Object.keys(lyrics).length,24);
+ for(const song of songs){
+  const lrc=lyrics[song.id],cues=parseLRC(lrc.text),video=videos[song.id];
+  assert.ok(cues.length>=20,song.id);assert.ok(cues.every(c=>c.primary&&c.secondary),song.id);
+  assert.ok(cues.every(c=>!c.primary.includes('^')),song.id+' does not mix embedded English annotations into Japanese');
+  assert.ok(cues.at(-1).start<=video.durationSeconds+2,song.id+' end timing fits recording');
+  assert.ok(Math.abs(lrc.duration-video.durationSeconds)<=2,song.id+' is not the longer MV');
+  assert.equal(video.channelId,'UC8_Ag6BVp43Vmrx6eillK9g');assert.equal(lrc.timingVerified,false);
+  assert.match(lrc.sourceUrl,/^https:\/\/lrclib\.net\//);assert.equal(lrc.translationCredit,'本站原創繁中翻譯');
+ }
+ assert.match(lyrics.gyakko.name,/replica/);assert.match(lyrics.kaiju.name,/replica/);
+});

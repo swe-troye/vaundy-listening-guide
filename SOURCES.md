@@ -78,7 +78,7 @@
 
 ## 摘要原則
 
-本站只發布原創中文摘要、意境聽法與提問，不複製完整歌詞或逐句翻譯。「歌曲背景」來自官方發行資料；沒有將它標為作者逐句解說。歌詞的說話者不自動等於藝人本人。
+主站與動漫導聆頁發布原創中文摘要、意境聽法與提問；YouTube 實驗頁的使用者提供歌詞與原創逐句翻譯另列於文末。「歌曲背景」來自官方發行資料；沒有將它標為作者逐句解說。歌詞的說話者不自動等於藝人本人。
 
 原始研究快取留在未發布的 research/，不是網站資產；公開歌單快照只含曲目資訊。
 
@@ -95,11 +95,14 @@
 
 ## YouTube 同步實驗版來源
 
-- 官方影片URL、標題、頻道與核對日期：youtube-data.js。24首依本站歌單對應，官方MV或Vaundy - Topic錄音；兩首replica採對應錄音。2026/10/29逐一以YouTube oEmbed核對，不將oEmbed成功視為所有地區均可嵌入。
-- YouTube iframe API：https://developers.google.com/youtube/iframe_api_reference 。使用playsinline、原生controls、字幕設定及播放事件，保留完整官方播放器與直接影片連結。
-- 互動參考：https://www.marumaru-x.com/japanese-song/play-y8rj989dn9 。僅研究播放／文字同步、翻譯開關與練習操作，未將整份歌詞、翻譯或網站程式碼加入新頁面。
-- 內建同步文字：本站data.js的原創line、titleMeaning、meaning、listen與prompt，段落时间为閱讀提示，不是逐句唱詞時間。
-- 逐句歌詞：使用者在瀏覽器自行匯入的LRC，按官方影片ID儲存於該瀏覽器；本站不預置或發布整份外部歌詞。測試使用自寫的簡短測試提示。
+2026/10/29 更新為 24 首內建日文／原創繁中逐句對照。
 
+- 日文／時間軸：使用者提供 `~/Downloads/vaundy_lab2_lrc.zip`，24 份 LRC；來源為 LRCLIB。每首 `youtube-lrc.js` 的 `sourceUrl` 及頁面「影片與內容來源」列出原始紀錄。原檔時間標記沿用，沒有根據 MV 長度猜測整曲偏移。
+- 繁中：依使用者提供的日文重新翻譯；自然口語風格與大意參考本文前列 marumaru 頁面。參考頁原譯者署名請見原站，本站翻譯署名為「本站原創繁中翻譯」。〈soramimi〉沒有外部完整中譯參考。
+- 整理：〈東京フラッシュ〉剝除 `^` 分隔的英文註解；日文轉寫／錯字沿用提供檔案，中文按語境理解；空白時間點顯示間奏標記。沒有匯入外站整份中文翻譯。
+- 官方錄音：`youtube-data.js`。24 支 Vaundy - Topic 錄音由 YouTube Music 搜尋取得，再以 oEmbed 與影片 metadata 核對官方頻道 ID、名稱／版本及時長；兩首 replica 保留對應錄音。錄音與 LRC 標示時長最多差 2 秒，不視為逐句實聽驗證。`timingVerified:false` 保留，介面提供時間微調。
+- YouTube iframe API：https://developers.google.com/youtube/iframe_api_reference 。使用 playsinline、原生 controls、字幕與播放事件，保留官方播放器及直接影片連結。
+- 互動參考：https://www.marumaru-x.com/japanese-song/play-y8rj989dn9 。逐句高亮、翻譯切換與循環練習自行實作。
+- 本機覆蓋：自行匯入的 LRC 按影片 ID 存於瀏覽器，可還原內建；檔案不由匯入功能上傳。提供 ZIP 所建立的內建日中資料則隨實驗頁發布。
 
-實驗版同步區的來源標示：23首顯示marumaru對應原始頁及已記錄的翻譯署名，気まぐれ依來源URL識別、不要求kind為translation；soramimi顯示原文來源與未取得完整外部中譯的說明。這些連結供直接閱讀原站，本站同步區仍為原創提示／使用者本機LRC。
+未逐句實聽核對全部 24 首。播放測試與來源核對不能取代聽覺上的詞句時間校正。

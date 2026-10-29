@@ -1,7 +1,7 @@
 'use strict';
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
 const root = path.resolve(__dirname,'..');
-const files = ['index.html','style.css','data.js','core.js','app.js','favicon.svg','listen.html','listen.css','listen.js','previews.js','player.js','assets/horo-poster.jpg','assets/vaundy-guide.svg','youtube.html','youtube.css','youtube.js','youtube-data.js','youtube-core.js'];
+const files = ['index.html','style.css','data.js','core.js','app.js','favicon.svg','listen.html','listen.css','listen.js','previews.js','player.js','assets/horo-poster.jpg','assets/vaundy-guide.svg','youtube.html','youtube.css','youtube.js','youtube-data.js','youtube-lrc.js','youtube-core.js'];
 const read = file => fs.readFileSync(path.join(root,file),'utf8');
 for (const file of files) if(file.endsWith('.js')) new vm.Script(read(file),{filename:file});
 for (const [page,script] of [['index.html','app.js'],['listen.html','listen.js'],['youtube.html','youtube.js']]) {
@@ -22,4 +22,4 @@ for (const [page,css,app,name] of [['index.html','style.css','app.js','standalon
  const scripts=['data.js','core.js',...(app==='listen.js'?['previews.js','player.js']:[]),app].map(f=>`<script>${read(f).replaceAll('listen.html#song-','listen-standalone.html#song-').replaceAll('index.html#song-','standalone.html#song-').replace(/<\/script/gi,'<\\/script')}</script>`).join('\n');
  html=html.replace('</body>',()=>`${scripts}\n</body>`);fs.writeFileSync(path.join(out,name),html);
 }
-console.log(`Built ${songs.length} songs, 18 static assets, and 2 portable HTML files.`);
+console.log(`Built ${songs.length} songs, 19 static assets, and 2 portable HTML files.`);
