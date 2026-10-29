@@ -58,3 +58,9 @@ Spotify使用官方createController/loadEntity/play/pause與事件。初次按�
 所有新增讀音參考 marumaru／UtaTen，kaiju 過ぎ→すぎ 補普通讀音於 EDITOR_READINGS。21 首標音無未覆蓋漢字，既有17首歌詞與讀音資料未變。四首下載來源保留溯源，已有字幕則不顯示待補與 JSON 下載入口。更新快取版本 extra-four-1；所有 timingVerified:false，未逐句實聽校正。
 
 追加驗證：14 項單元測試、建置、21 項受控跟唱介面檢查通過，四首時間點與提供檔案核對一致、21首漢字完整覆蓋。此次實際 YouTube 測試受阻：iframe 回傳150，重新讀取新曲與原有 odoriko 的 player response 皆為 LOGIN_REQUIRED（登入以確認非bot）。未聲稱此次實際播放通過；保留官方錄音 ID 與直接 YouTube 入口。
+
+## 手機歌詞跟播 UX
+
+手機依序呈現播放區、歌詞跟播、循環練習與選曲。目前句改深玫瑰紅底白字，日文、繁中、ruby 與時間皆維持對比；自動跟隨以歌詞區與螢幕的可見交集置中。手動捲動或 PageDown／PageUp／Home／End 會切自由瀏覽，可返回目前句。「歌詞設定」收納字級、匯入與偏移；「來源與同步說明」保留完整署名，兩者預設收起。正常畫面隱藏獨立 YouTube 外連，只在 API／影片失敗時顯示備用連結。CSS／JS 快取版本 mobile-lyrics-1；歌詞資料、時間軸與影片 ID 未改。
+
+14 項單元測試、建置、24 項受控跟唱介面檢查與 layout detector 通過，沒有頁面 JS 錯誤；涵蓋 320／390／768／844px、200% 文字、目前句 WCAG AA 對比、390px 手機可見範圍、設定展開與來源折疊。未新增實際 YouTube 播放成功的聲稱，先前登入／bot 限制仍適用。

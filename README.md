@@ -80,11 +80,11 @@ VAUNDY_BROWSER=webkit node scripts/playback-check.cjs
 
 播放器使用 21 支 Vaundy - Topic 官方錄音影片，metadata 見 `youtube-data.js`。先從 YouTube Music 錄音搜尋取得候選，再以 YouTube oEmbed 核對名稱／頻道、影片資料核對 Topic 頻道 ID `UC8_Ag6BVp43Vmrx6eillK9g` 與時長；一般 YouTube 專輯頁可能將錄音替換為 MV，不能只靠該頁選擇音源。〈怪獣の花唄〉已改為《strobo》原版；〈逆光〉已移出歌單。錄音總長與提供的 LRC 標示最多差 2 秒，**這不是逐句同步校正**，21 首內建時間軸仍標記 `timingVerified:false`，可用文字延遲微調。
 
-互動參考 marumaru：逐句高亮、點句跳播、自動跟隨捲動、中文切換、字級、速度、單句循環、A–B 循環與時間偏移。影片透過 `getCurrentTime` 驅動同步，播放時間前進才標示播放中；首次播放及自動換歌若受阻，提示點影片的播放鍵。YouTube 的地區與瀏覽器播放設定仍可能影響嵌入，保留直接影片連結。
+互動參考 marumaru：逐句高亮、點句跳播、自動跟隨捲動、中文切換、字級、速度、單句循環、A–B 循環與時間偏移。手機優先顯示播放器與歌詞；目前句以深玫瑰紅底、白字標示，手動瀏覽後可回到目前歌詞。字級、匯入與時間微調放在預設折疊的「歌詞設定」，完整署名放在「來源與同步說明」。影片透過 `getCurrentTime` 驅動同步，播放時間前進才標示播放中；首次播放及自動換歌若受阻，提示點影片的播放鍵。獨立「改在 YouTube 播放」連結只在播放器連線或影片出錯時出現。
 
 「匯入 LRC」可用自己的 `.lrc`／`.txt` 覆蓋這首內建歌詞；格式 `[00:12.50]文字`，同一時間多行可放日文與中文。檔案最多 500 KB，僅在瀏覽器解析與保存。「還原內建歌詞」清除覆蓋並恢復日中對照。內建歌詞的時間微調也按影片保存，只存偏移值、不重複存整份內建文字；曲目切換不互相污染。
 
-驗證：`npm test` 共 14 項；`node scripts/youtube-browser-check.cjs` 共 21 組受控 API 介面檢查，涵蓋雙語預載、匯入／還原、偏移保存、跳播、同步、單句及 A–B 循環、播放受阻、XSS 文字處理與手機／200% 文字。真正 YouTube 測試另外驗證播放時間、跳播與下一首播放；WebKit iPhone 模式不等於實體 iPhone Edge。
+驗證：`npm test` 共 14 項；`node scripts/youtube-browser-check.cjs` 共 24 組受控 API 介面檢查，涵蓋雙語預載、匯入／還原、偏移保存、跳播、同步、單句及 A–B 循環、播放受阻、條件式外連、折疊設定／署名、目前句對比與手機可見範圍、XSS 文字處理及 200% 文字。最新建置與排版檢查通過。此次真正 YouTube 播放測試受登入／bot 限制，未確認實際播放；WebKit iPhone 模式不等於實體 iPhone Edge。
 
 ```sh
 node scripts/youtube-browser-check.cjs
