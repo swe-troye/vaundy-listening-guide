@@ -17,7 +17,8 @@ window.VAUNDY_VIDEOS = {
     "source": "https://www.youtube.com/watch?v=ENQANfv2ANQ",
     "checkedAt": "2026-10-29",
     "channelId": "UC8_Ag6BVp43Vmrx6eillK9g",
-    "durationSeconds": 225
+    "durationSeconds": 225,
+    "lrcDurationDifferenceSeconds": 0
   },
   "tokyo-flash": {
     "videoId": "hS2BVRnQiYI",
@@ -116,7 +117,8 @@ window.VAUNDY_VIDEOS = {
     "source": "https://www.youtube.com/watch?v=Hy7GWPkrZv0",
     "checkedAt": "2026-10-29",
     "channelId": "UC8_Ag6BVp43Vmrx6eillK9g",
-    "durationSeconds": 243
+    "durationSeconds": 243,
+    "lrcDurationDifferenceSeconds": 0.305
   },
   "saikai": {
     "videoId": "4flRaFrBqFU",
@@ -175,7 +177,8 @@ window.VAUNDY_VIDEOS = {
     "source": "https://www.youtube.com/watch?v=uj1DkgXSR4w",
     "checkedAt": "2026-10-29",
     "channelId": "UC8_Ag6BVp43Vmrx6eillK9g",
-    "durationSeconds": 205
+    "durationSeconds": 205,
+    "lrcDurationDifferenceSeconds": 1.016
   },
   "shiwaawase": {
     "videoId": "Xay0HJ4LsNc",
@@ -194,7 +197,8 @@ window.VAUNDY_VIDEOS = {
     "source": "https://www.youtube.com/watch?v=stss6w2io68",
     "checkedAt": "2026-10-29",
     "channelId": "UC8_Ag6BVp43Vmrx6eillK9g",
-    "durationSeconds": 249
+    "durationSeconds": 249,
+    "lrcDurationDifferenceSeconds": 0
   },
   "bitter": {
     "videoId": "EaC8Dgtvrb0",
@@ -207,7 +211,7 @@ window.VAUNDY_VIDEOS = {
     "lrcDurationDifferenceSeconds": 0
   }
 };
-// Download sources only; these four songs await user-provided LRC.
+// Original download sources retained for provenance; all four are now bundled.
 window.VAUNDY_LRC_SOURCES = {
   "wasureru-mae-ni": {
     "songId": "wasureru-mae-ni",
@@ -242,7 +246,7 @@ window.VAUNDY_LRC_SOURCES = {
     "name": "シンギュラリティ",
     "id": 30540590,
     "albumName": "シンギュラリティ",
-    "duration": 249.0,
+    "duration": 249,
     "spotifyDurationSeconds": 248.874,
     "videoDurationSeconds": 249,
     "timestampCount": 80,
@@ -256,7 +260,7 @@ window.VAUNDY_LRC_SOURCES = {
     "name": "怪獣の花唄",
     "id": 1408236,
     "albumName": "strobo",
-    "duration": 225.0,
+    "duration": 225,
     "spotifyDurationSeconds": 224.804,
     "videoDurationSeconds": 225,
     "timestampCount": 73,

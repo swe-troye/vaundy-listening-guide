@@ -74,11 +74,11 @@ VAUNDY_BROWSER=webkit node scripts/playback-check.cjs
 
 入口：首頁「進入歌詞跟唱」；每首歌曲「完整播放・歌詞跟唱」；動漫導聆播放器旁的同名按鈕。逐首入口與歌詞頁回到動漫／文字版皆保留曲目，切換時先暫停當前播放。可攜 HTML 的跟唱連結指向正式 HTTPS 網址，避免單獨分享兩份可攜檔案時缺少歌詞頁。
 
-預設提供 17 首完整日文與本站原創繁中逐句翻譯；另外 4 首等待使用者提供 LRC，資料見 `youtube-lrc.js`。日文與時間軸來自使用者提供的 `vaundy_lab2_lrc.zip`（LRCLIB），中文依該日文重新翻譯，語意與自然口語風格參考 marumaru。每首保留 LRCLIB 紀錄連結、翻譯歸屬與 marumaru 參考頁。外站譯者署名屬參考頁，本站中文不冒稱為其作品。
+預設提供 21 首日文與本站原創繁中逐句翻譯，資料見 `youtube-lrc.js`。日文與時間軸來自使用者提供的 `vaundy_lab2_lrc.zip` 與 `vaundy_extra_4_lrc.zip`（LRCLIB），中文依該日文重新翻譯，語意與自然口語風格參考 marumaru。每首保留 LRCLIB 紀錄連結、翻譯歸屬與 marumaru 參考頁。外站譯者署名屬參考頁，本站中文不冒稱為其作品。
 
 整理時保留原始時間標記與重複段落；空白時間點顯示「♪／間奏／尾聲」，〈東京フラッシュ〉移除原檔 `^` 後的英文註解，改放原創繁中。日文錯字／口語轉寫沿用提供檔案，中文依上下文理解；意象含糊處屬本站翻譯解讀。吟唱若日中相同，第二行標示「吟唱」避免解析器去重。
 
-播放器使用 21 支 Vaundy - Topic 官方錄音影片，metadata 見 `youtube-data.js`。先從 YouTube Music 錄音搜尋取得候選，再以 YouTube oEmbed 核對名稱／頻道、影片資料核對 Topic 頻道 ID `UC8_Ag6BVp43Vmrx6eillK9g` 與時長；一般 YouTube 專輯頁可能將錄音替換為 MV，不能只靠該頁選擇音源。〈怪獣の花唄〉已改為《strobo》原版；〈逆光〉已移出歌單。錄音總長與提供的 LRC 標示最多差 2 秒，**這不是逐句同步校正**，17 首內建時間軸仍標記 `timingVerified:false`，可用文字延遲微調。
+播放器使用 21 支 Vaundy - Topic 官方錄音影片，metadata 見 `youtube-data.js`。先從 YouTube Music 錄音搜尋取得候選，再以 YouTube oEmbed 核對名稱／頻道、影片資料核對 Topic 頻道 ID `UC8_Ag6BVp43Vmrx6eillK9g` 與時長；一般 YouTube 專輯頁可能將錄音替換為 MV，不能只靠該頁選擇音源。〈怪獣の花唄〉已改為《strobo》原版；〈逆光〉已移出歌單。錄音總長與提供的 LRC 標示最多差 2 秒，**這不是逐句同步校正**，21 首內建時間軸仍標記 `timingVerified:false`，可用文字延遲微調。
 
 互動參考 marumaru：逐句高亮、點句跳播、自動跟隨捲動、中文切換、字級、速度、單句循環、A–B 循環與時間偏移。影片透過 `getCurrentTime` 驅動同步，播放時間前進才標示播放中；首次播放及自動換歌若受阻，提示點影片的播放鍵。YouTube 的地區與瀏覽器播放設定仍可能影響嵌入，保留直接影片連結。
 
@@ -98,8 +98,10 @@ VAUNDY_BROWSER=webkit node scripts/youtube-live-check.cjs
 
 維護標音：`python3 scripts/build-readings.py` 讀取本機 `research/` 的參考頁快照，輸出只有原檔文字與讀音的結構化片段；不發布原站 HTML。對齊以逐句內容優先，單字補充只接受該歌讀音無歧義的詞；不將「上手」錯拆成「上／手→て」。`EDITOR_READINGS` 列出本站補充的普通讀音。輸出報告位於忽略的 `research/readings-report.json`；執行 `npm test` 會檢查原文完整保留、所有漢字覆蓋與特殊唱法，DOM 以 `textContent` 建立標音。
 
-## 目前缺字幕的四首
+## 四首追加字幕（已匯入）
 
-21 首清單保留 17 首既有字幕；〈忘れる前に〉、〈走れSAKAMOTO〉、〈シンギュラリティ〉與〈怪獣の花唄〉原版待使用者下載 LRC 後提供。跟唱頁顯示「字幕待補」並提供 JSON 來源，現有提示為原創導聆，非逐句歌詞。原版怪獣不沿用舊 replica LRC。
+21 首內建字幕已齊：保留 17 首既有日中對照，並匯入使用者提供的 `~/Downloads/vaundy_extra_4_lrc.zip` 四首。新增〈忘れる前に〉、〈走れSAKAMOTO〉、〈シンギュラリティ〉與〈怪獣の花唄〉原版，共 246 個含間奏的時間點；各首皆有本站原創繁中翻譯與漢字讀音。
 
-下載來源列於 `youtube-data.js` 的 `VAUNDY_LRC_SOURCES`；JSON 的 `syncedLyrics` 欄位可存成 UTF-8 `.lrc`。下載網址與完整核對資訊已另提供使用者；不需要 Spotify API 金鑰。
+〈怪獣の花唄〉原檔為羅馬字，本站依提供文字還原日文並參考同名原曲字形；保留每個原版時間戳記，不使用 replica LRC。讀音參考 marumaru，普通字形差異「過ぎ→すぎ」由本站補充。其餘三首保留提供的日文文字。所有時間軸仍未逐句實聽校正，可用偏移微調。
+
+四首原下載來源保留於 `youtube-data.js` 的 `VAUNDY_LRC_SOURCES`，已補齊的歌曲改回歌詞參考頁連結與 ZIP 來源說明。

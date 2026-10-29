@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 # Editorial readings for supplied kanji where the reference writes kana, or
 # uses a different spelling. These are ordinary readings, not verified sung overrides.
 EDITOR_READINGS = {
+    'kaiju': {'過ぎ': 'すぎ'},
     'hadaka-no-yusha': {'想': 'おも', '懐疑': 'かいぎ', '返': 'かえ'},
     'time-paradox': {'枯': 'か', '覗': 'のぞ'},
     'tokyo-flash': {'上手': 'うま', '悪': 'わる', '見': 'み', '越': 'こ', '何処': 'どこ', '止': 'や', '癖': 'くせ'},
@@ -208,7 +209,7 @@ for song in data['VAUNDY_SONGS']:
     missing = [''.join(c for x in seg if not x.get('reading') for c in x['text'] if '\u3400' <= c <= '\u9fff') for seg in lines.values()]
     report.append({'song': sid, 'rubyCount': sum(bool(x.get('reading')) for seg in lines.values() for x in seg), 'unannotatedKanji': [x for x in missing if x]})
     result[sid] = {'sourceName': source_name, 'sourceUrl': source_url, 'supplementUrl': original['url'] if used_extra and original else None, 'editorialReadings': bool(EDITOR_READINGS.get(sid)), 'lines': lines}
-(ROOT / 'youtube-readings.js').write_text('// Ruby readings reference marumaru (23 songs) / UtaTen (soramimi).\n// Base text remains the user-provided Japanese lyrics; reference HTML is not shipped.\nwindow.VAUNDY_READINGS = ' + json.dumps(result, ensure_ascii=False, indent=2) + ';\n')
+(ROOT / 'youtube-readings.js').write_text('// Ruby readings reference marumaru, with UtaTen supplements where needed.\n// Base text follows supplied lyrics; kaiju romaji is transcribed into Japanese.\n// Reference HTML is not shipped.\nwindow.VAUNDY_READINGS = ' + json.dumps(result, ensure_ascii=False, indent=2) + ';\n')
 (ROOT / 'research/readings-report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
 for x in report:
     print(x)

@@ -50,3 +50,11 @@ Spotify使用官方createController/loadEntity/play/pause與事件。初次按�
 既有歌曲內部 ID 與 storage key 保留；移出歌單的歌曲被 sanitizeState 過濾。怪獣換影片 ID，使舊 replica 本機字幕／偏移不會混用。已更新各驗證腳本到 21 首與 17＋4 字幕狀態。
 
 新歌單驗證：14 項單元測試、建置、22 項閱讀頁瀏覽器檢查、21 項跟唱頁受控檢查通過。21 個試聽音訊確認 audio/mpeg；Edge 與 WebKit iPhone 模式實際試聽、自動換首及原生 ended 接續通過；Edge 實際 YouTube 播放、雙語跳播及原版怪獣換首通過。未實體 iPhone 或逐句實聽校正。
+
+## 四首 LRC 已補齊（現行）
+
+使用者提供最新 ~/Downloads/vaundy_extra_4_lrc.zip 並要求繼續。四份 LRC 已加入 youtube-lrc.js，21 首內建日中對照與讀音齊備。追加 wasureru-mae-ni 43、hashire-sakamoto 50、singularity 80、kaiju 原版 73 個含間奏時間點；繁中為本站原創，時間原樣保留。kaiju 提供檔案是羅馬字，依提供文字還原日文，originalScript:romaji 並在來源區標示；其餘三首原文逐字保留。
+
+所有新增讀音參考 marumaru／UtaTen，kaiju 過ぎ→すぎ 補普通讀音於 EDITOR_READINGS。21 首標音無未覆蓋漢字，既有17首歌詞與讀音資料未變。四首下載來源保留溯源，已有字幕則不顯示待補與 JSON 下載入口。更新快取版本 extra-four-1；所有 timingVerified:false，未逐句實聽校正。
+
+追加驗證：14 項單元測試、建置、21 項受控跟唱介面檢查通過，四首時間點與提供檔案核對一致、21首漢字完整覆蓋。此次實際 YouTube 測試受阻：iframe 回傳150，重新讀取新曲與原有 odoriko 的 player response 皆為 LOGIN_REQUIRED（登入以確認非bot）。未聲稱此次實際播放通過；保留官方錄音 ID 與直接 YouTube 入口。

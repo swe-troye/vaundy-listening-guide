@@ -88,7 +88,7 @@ window.VAUNDY_SONGS = [
       "checkedAt": "2026-10-29",
       "originalScope": "〈怪獣の花唄〉原版完整原文",
       "translationScope": "全文（外部中文翻譯參考）",
-      "note": "摘要依同名原曲完整原文與中譯參考撰寫。歌單與播放器改為《strobo》原版；舊 replica 時間軸不沿用，待使用者提供原版 LRC。"
+      "note": "摘要依同名原曲完整原文與中譯參考撰寫。歌單與播放器改為《strobo》原版；舊 replica 時間軸不沿用；原版 LRC 已由使用者提供，羅馬字還原日文後補入跟唱頁。"
     },
     "sources": [
       {
