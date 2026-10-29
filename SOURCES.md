@@ -7,41 +7,38 @@
 - [Ticket Plus 台北場](https://ticketplus.com.tw/activity/a56fce0af2da4d41e26b2dfa34b7babc)：活動頁及其公開 getS3 event JSON 已讀，確認 10/31、11/01，台北小巨蛋，兩天 17:30 入場／19:00 開演。
 - [官方 HORO 巡演頁](https://member.vaundy.jp/feature/ASIAARENATOUR_2026)：台北場時間與地點交叉核對。
 - [官方簡介](https://vaundy.jp/feature/biography)、[官方唱片資料](https://vaundy.jp/discography/)：創作與發行、動畫／戲劇搭配資訊已讀。
-- [Spotify 歌單](https://open.spotify.com/playlist/3EWsdNGyZ2tYVWndnJih0N)：已讀桌面頁與公開 embed 的 trackList；24 首，建立者 Aya。歌單標題使用 Set List，不將其當作官方台北曲目表。純曲目快照為 playlist-snapshot.json。
+- [Spotify 歌單](https://open.spotify.com/playlist/37i9dQZF1DXarlFLUSkBwQ)：已讀公開 embed 的 trackList；「On Tour Taiwan: Vaundy」，21 首，建立者 Spotify。依使用者新提供歌單更新順序、曲目 ID 與公開試聽。此清單仍非官方台北演出曲目表，純資訊快照為 playlist-snapshot.json。
 - [官方海報](https://static.ticketplus.com.tw/event/a56fce0af2da4d41e26b2dfa34b7babc/picBigActiveMain_1778056088808.jpeg)：來源為 Ticket Plus 活動資料的 picBigActiveMain；網站檔案 assets/horo-poster.jpg。
 
 ## 逐曲閱讀
 
-24 首日文原文全文（含重複段落與尾聲）已讀；23 首完整外部中文對照已讀，〈soramimi〉以原文撰寫原創中文摘要。UtaTen提供23首原文，〈気まぐれ〉由marumaru原文補足；外部中譯均不自動視為官方翻譯。
+21 首日文原文全文已讀；20 首完整外部中譯參考已讀。〈走れSAKAMOTO〉已讀完整原文及 marumaru 可見中文，但該頁外部字幕來源僅標 TV Size，不推定全曲翻譯署名或範圍。以下為目前 21 首歌單順序。
 
 | # | 歌曲 | 原文 | 中文對照 |
 |---|---|---|---|
-| 01 | 泣き地蔵 | [UtaTen](https://utaten.com/lyric/hw21072901/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y8rj989dn9) |
-| 02 | ホムンクルス | [UtaTen](https://utaten.com/lyric/hw24061821/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-14o715g4ok) |
-| 03 | 裸の勇者 | [UtaTen](https://utaten.com/lyric/ma22011710/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-72r9mye9oz) |
-| 04 | 再会 | [UtaTen](https://utaten.com/lyric/ks25060301/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y7okwvzeoq) |
-| 05 | 逆光 - replica - | [UtaTen](https://utaten.com/lyric/mi23111348/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-xqrd9q20nd) |
-| 06 | 不可幸力 | [UtaTen](https://utaten.com/lyric/un20092501/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-94oglmkpr0) |
-| 07 | 風神 | [UtaTen](https://utaten.com/lyric/mi24100822/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-q9oql2k6n4) |
-| 08 | そんなbitterな話 | [UtaTen](https://utaten.com/lyric/hw23032236/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-v7n3ky2vok) |
-| 09 | 恋風邪にのせて | [UtaTen](https://utaten.com/lyric/tt22013105/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-evr84jq1nm) |
-| 10 | 気まぐれ | [marumaru](https://www.marumaru-x.com/japanese-song/play-wzrv4x5lr3) | [marumaru原文／中譯](https://www.marumaru-x.com/japanese-song/play-wzrv4x5lr3) |
-| 11 | napori | [UtaTen](https://utaten.com/lyric/nm20052728/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-e4oy5190n3) |
-| 12 | タイムパラドックス | [UtaTen](https://utaten.com/lyric/hw24011202/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-14o71emqok) |
-| 13 | しわあわせ | [UtaTen](https://utaten.com/lyric/ma21041401/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-lkrz50g0re) |
-| 14 | 東京フラッシュ | [UtaTen](https://utaten.com/lyric/rq20061008/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-vxn5w73jn9) |
-| 15 | トドメの一撃 feat. Cory Wong | [UtaTen](https://utaten.com/lyric/tt23092503/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-vxn5wje4n9) |
-| 16 | イデアが溢れて眠れない | [UtaTen](https://utaten.com/lyric/sz26033006/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-14o71j4qok) |
-| 17 | 呼び声 | [UtaTen](https://utaten.com/lyric/hw25121002/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y8rj9k56n9) |
-| 18 | 飛ぶ時 | [UtaTen](https://utaten.com/lyric/sz26020427/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y8rj9kg3n9) |
-| 19 | soramimi | [UtaTen](https://utaten.com/lyric/nm20052727/) | 未取得完整中譯 |
-| 20 | CHAINSAW BLOOD | [UtaTen](https://utaten.com/lyric/hw22092012/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-v7n3km6zok) |
-| 21 | Tokimeki | [UtaTen](https://utaten.com/lyric/mi23050949/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-wdr6qvyvn3) |
-| 22 | 花占い | [UtaTen](https://utaten.com/lyric/hw21061809/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-g9r050egnv) |
-| 23 | 怪獣の花唄 - replica - | [UtaTen](https://utaten.com/lyric/nm20051304/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y8rj9dxzn9) |
-| 24 | 踊り子 | [UtaTen](https://utaten.com/lyric/ma21111952/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-v7n3k7x7ok) |
+| 01 | 踊り子 | [UtaTen](https://utaten.com/lyric/ma21111952/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-v7n3k7x7ok) |
+| 02 | 怪獣の花唄 | [UtaTen](https://utaten.com/lyric/nm20051304/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y8rj9dxzn9) |
+| 03 | 東京フラッシュ | [UtaTen](https://utaten.com/lyric/rq20061008/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-vxn5w73jn9) |
+| 04 | 裸の勇者 | [UtaTen](https://utaten.com/lyric/ma22011710/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-72r9mye9oz) |
+| 05 | 飛ぶ時 | [UtaTen](https://utaten.com/lyric/sz26020427/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y8rj9kg3n9) |
+| 06 | CHAINSAW BLOOD | [UtaTen](https://utaten.com/lyric/hw22092012/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-v7n3km6zok) |
+| 07 | イデアが溢れて眠れない | [UtaTen](https://utaten.com/lyric/sz26033006/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-14o71j4qok) |
+| 08 | 不可幸力 | [UtaTen](https://utaten.com/lyric/un20092501/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-94oglmkpr0) |
+| 09 | 呼び声 | [UtaTen](https://utaten.com/lyric/hw25121002/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y8rj9k56n9) |
+| 10 | 恋風邪にのせて | [UtaTen](https://utaten.com/lyric/tt22013105/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-evr84jq1nm) |
+| 11 | 花占い | [UtaTen](https://utaten.com/lyric/hw21061809/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-g9r050egnv) |
+| 12 | 忘れる前に | [UtaTen](https://utaten.com/lyric/mi25100128/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-v7n3k9m6ok) |
+| 13 | 再会 | [UtaTen](https://utaten.com/lyric/ks25060301/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y7okwvzeoq) |
+| 14 | Tokimeki | [UtaTen](https://utaten.com/lyric/mi23050949/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-wdr6qvyvn3) |
+| 15 | タイムパラドックス | [UtaTen](https://utaten.com/lyric/hw24011202/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-14o71emqok) |
+| 16 | 風神 | [UtaTen](https://utaten.com/lyric/mi24100822/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-q9oql2k6n4) |
+| 17 | napori | [UtaTen](https://utaten.com/lyric/nm20052728/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-e4oy5190n3) |
+| 18 | 走れSAKAMOTO | [UtaTen](https://utaten.com/lyric/tt24121701/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-y7okw28voq)（外部字幕標示限 TV Size） |
+| 19 | しわあわせ | [UtaTen](https://utaten.com/lyric/ma21041401/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-lkrz50g0re) |
+| 20 | シンギュラリティ | [UtaTen](https://utaten.com/lyric/sz26012148/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-lvnw1zvqo7) |
+| 21 | そんなbitterな話 | [UtaTen](https://utaten.com/lyric/hw23032236/) | [marumaru](https://www.marumaru-x.com/japanese-song/play-v7n3ky2vok) |
 
-## 譯者與閱讀差異
+## 譯者與閱讀差異（含舊歌單研究紀錄）
 
 - 〈泣き地蔵〉：頁面中文翻譯欄署名「站長」。
 - 〈ホムンクルス〉：頁面轉載中譯；署名月勳。
@@ -90,12 +87,12 @@
 
 ## iPhone 試聽連播來源
 
-24首公開預覽取自使用者提供的Spotify歌單embed的audioPreview欄位，依playlist-snapshot.json的曲目ID逐一對應。安全過濾後的URL見previews.js，僅含p.scdn.co/mp3-preview音訊路徑，不含token、client credentials或URL query。2026/10/29逐一核對24個來源均回傳audio/mpeg。網站播放公開試聽片段，完整歌曲由每首Spotify連結開啟。播放器現行方式見README「自動播放（iPhone修正）」；先前iFrame API為歷史版本。
+21首公開預覽取自使用者提供的Spotify歌單embed的audioPreview欄位，依playlist-snapshot.json的曲目ID逐一對應。安全過濾後的URL見previews.js，僅含p.scdn.co/mp3-preview音訊路徑，不含token、client credentials或URL query。2026/10/29逐一核對24個來源均回傳audio/mpeg。網站播放公開試聽片段，完整歌曲由每首Spotify連結開啟。播放器現行方式見README「自動播放（iPhone修正）」；先前iFrame API為歷史版本。
 
 
 ## 歌詞跟唱來源
 
-2026/10/29 更新為 24 首內建日文／原創繁中逐句對照。
+2026/10/29 初版為 24 首；切換新歌單後，現在保留 17 首內建日文／原創繁中逐句對照。〈忘れる前に〉、〈走れSAKAMOTO〉、〈シンギュラリティ〉及〈怪獣の花唄〉原版等待使用者提供 LRC；來源網址見 `youtube-data.js` 的 `VAUNDY_LRC_SOURCES`。缺字幕頁顯示原創導聆，未沿用 replica 版時間軸。以下 24 首匯入方式為初版研究紀錄。
 
 - 日文／時間軸：使用者提供 `~/Downloads/vaundy_lab2_lrc.zip`，24 份 LRC；來源為 LRCLIB。每首 `youtube-lrc.js` 的 `sourceUrl` 及頁面「影片與內容來源」列出原始紀錄。原檔時間標記沿用，沒有根據 MV 長度猜測整曲偏移。
 - 繁中：依使用者提供的日文重新翻譯；自然口語風格與大意參考本文前列 marumaru 頁面。參考頁原譯者署名請見原站，本站翻譯署名為「本站原創繁中翻譯」。〈soramimi〉沒有外部完整中譯參考。
@@ -112,3 +109,20 @@
 `youtube-readings.js` 為使用者提供日文的標音資料，23 首主要參考本文件歌曲表的 marumaru 逐句 ruby。保留 `<rt>` 的假名及 `<rtc>` 的特殊唱法，例如〈再会〉超→super、隅→すき，沒有用通用字典覆蓋其特殊讀法。〈soramimi〉使用 [UtaTen](https://utaten.com/lyric/nm20052727/) 的假名；其他少數差異使用原文來源 UtaTen 補充（各首 `supplementUrl`）。
 
 參考頁已用假名、提供檔案卻用漢字或數字的地方，補普通讀音；例如ニ人／2人→ふたり、一口／1口→ひとくち。本站補充詞列於 `scripts/build-readings.py` 的 `EDITOR_READINGS`，來源歸屬在歌詞區標示。日文基底逐字保留，中文仍為本站原創翻譯。外站讀音供參考，未宣稱所有特殊唱法都逐首實聽確認。
+
+## On Tour Taiwan 新歌單更新
+
+2026/10/29 切換至 Spotify 21 首「On Tour Taiwan: Vaundy」。新增〈忘れる前に〉、〈走れSAKAMOTO〉、〈シンギュラリティ〉；移除〈泣き地蔵〉、〈ホムンクルス〉、〈逆光 - replica -〉、〈気まぐれ〉、〈トドメの一撃〉、〈soramimi〉。〈怪獣の花唄〉由 replica 改為《strobo》原版。其餘同曲的 Spotify ID 依新清單更新，保留歌曲內部 ID 與閱讀狀態。
+
+新增三曲全文原文、marumaru 可見翻譯及官方發行背景均已讀。〈忘れる前に〉2025/09/30 發行、東京 Metro「Find my Tokyo.」CM 曲；〈走れSAKAMOTO〉2025/01/12 數位發行、2025/03/05 CD 發行、《SAKAMOTO DAYS》OP；〈シンギュラリティ〉2026/02/11 發行、Tate 美術展官方主題曲。前者與後者 marumaru 中譯署名站長；SAKAMOTO 頁僅將 TV Size 轉自影片 CC 字幕，不宣稱全曲皆為該來源。
+
+四支新選錄音以 YouTube Music、oEmbed 及 metadata 核對 Topic 頻道 ID、標題與時長：
+
+| 歌曲 | 官方錄音 | LRC 來源 JSON |
+|---|---|---|
+| 忘れる前に | [官方錄音](https://www.youtube.com/watch?v=Hy7GWPkrZv0) | [26319946](https://lrclib.net/api/get/26319946) |
+| 走れSAKAMOTO | [官方錄音](https://www.youtube.com/watch?v=uj1DkgXSR4w) | [16612304](https://lrclib.net/api/get/16612304) |
+| シンギュラリティ | [官方錄音](https://www.youtube.com/watch?v=stss6w2io68) | [30540590](https://lrclib.net/api/get/30540590) |
+| 怪獣の花唄（原版） | [官方錄音](https://www.youtube.com/watch?v=ENQANfv2ANQ) | [1408236](https://lrclib.net/api/get/1408236) |
+
+LRC 來源只查核同步歌詞存在、時間戳記排序與曲長，不匯入全文。曲長與 Spotify、Topic 錄音皆差 2 秒內，未逐句實聽校正。JSON 的 `syncedLyrics` 欄位才是 LRC 文字，等待使用者自行下載提供。原版怪獣使用新 YouTube ID，舊 replica 偏移與本機匯入不會套到原版。

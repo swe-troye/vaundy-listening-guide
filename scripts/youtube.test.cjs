@@ -17,17 +17,17 @@ test('active cue uses timestamp boundaries, seek-back and user offset',()=>{
  const cues=parseLRC('[00:02]提示一\n[00:06]提示二\n[00:10]提示三');
  assert.equal(activeIndex(cues,1),-1);assert.equal(activeIndex(cues,6),1);assert.equal(activeIndex(cues,3),0);assert.equal(activeIndex(cues,6,1),0);assert.equal(activeIndex(cues,12),2);assert.equal(activeIndex([],8),-1);assert.equal(formatTime(125.7),'02:05');
 });
-test('all 24 official video IDs are verified and preserve replica recordings',()=>{
+test('all 21 official video IDs preserve the selected recordings',()=>{
  const ctx={window:{}};for(const file of ['data.js','youtube-data.js'])vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8'),ctx);
  const songs=ctx.window.VAUNDY_SONGS, videos=ctx.window.VAUNDY_VIDEOS;
- assert.equal(Object.keys(videos).length,24);for(const song of songs){const v=videos[song.id];assert.match(v.videoId,/^[A-Za-z0-9_-]{11}$/);assert.match(v.channel,/^Vaundy/);assert.equal(v.source,'https://www.youtube.com/watch?v='+v.videoId);}
- assert.match(videos.gyakko.title,/replica/);assert.match(videos.kaiju.title,/replica/);
+ assert.equal(Object.keys(videos).length,21);for(const song of songs){const v=videos[song.id];assert.match(v.videoId,/^[A-Za-z0-9_-]{11}$/);assert.match(v.channel,/^Vaundy/);assert.equal(v.source,'https://www.youtube.com/watch?v='+v.videoId);}
+ assert.equal(videos.kaiju.title,'怪獣の花唄');assert.equal(videos.kaiju.videoId,'ENQANfv2ANQ');
 });
 test('all supplied songs have bilingual timing within the selected studio recording',()=>{
  const ctx={window:{}};for(const file of ['data.js','youtube-data.js','youtube-lrc.js'])vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8'),ctx);
  const {VAUNDY_SONGS:songs,VAUNDY_VIDEOS:videos,VAUNDY_LRC:lyrics}=ctx.window;
- assert.equal(Object.keys(lyrics).length,24);
- for(const song of songs){
+ assert.equal(Object.keys(lyrics).length,17);
+ for(const song of songs.filter(s=>lyrics[s.id])){
   const lrc=lyrics[song.id],cues=parseLRC(lrc.text),video=videos[song.id];
   assert.ok(cues.length>=20,song.id);assert.ok(cues.every(c=>c.primary&&c.secondary),song.id);
   assert.ok(cues.every(c=>!c.primary.includes('^')),song.id+' does not mix embedded English annotations into Japanese');
@@ -36,12 +36,12 @@ test('all supplied songs have bilingual timing within the selected studio record
   assert.equal(video.channelId,'UC8_Ag6BVp43Vmrx6eillK9g');assert.equal(lrc.timingVerified,false);
   assert.match(lrc.sourceUrl,/^https:\/\/lrclib\.net\//);assert.equal(lrc.translationCredit,'本站原創繁中翻譯');
  }
- assert.match(lyrics.gyakko.name,/replica/);assert.match(lyrics.kaiju.name,/replica/);
+ assert.equal(lyrics.kaiju,undefined);assert.equal(lyrics['hashire-sakamoto'],undefined);
 });
 test('ruby segments preserve supplied lyric text and contextual sung readings',()=>{
  const ctx={window:{}};for(const file of ['youtube-lrc.js','youtube-readings.js'])vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8'),ctx);
  const {VAUNDY_LRC:lyrics,VAUNDY_READINGS:readings}=ctx.window;
- assert.equal(Object.keys(readings).length,24);
+ assert.equal(Object.keys(readings).length,17);
  for(const [id,lrc] of Object.entries(lyrics)){
   for(const cue of parseLRC(lrc.text)){
    const segments=readings[id].lines[cue.primary];assert.ok(segments,id+' has this cue');
@@ -54,4 +54,16 @@ test('ruby segments preserve supplied lyric text and contextual sung readings',(
  assert.ok(Object.values(readings.saikai.lines).some(line=>line.some(x=>x.text==='隅'&&x.reading==='すき')));
  assert.equal(readings['tokyo-flash'].lines[Object.keys(readings['tokyo-flash'].lines).find(x=>x.includes('上手'))].find(x=>x.text==='上手').reading,'うま');
  assert.ok(Object.values(readings.napori.lines).some(line=>line.some(x=>x.text==='2人'&&x.reading==='ふたり')));
+});
+
+test('four missing subtitles have validated download sources and never inherit replica timing',()=>{
+ const ctx={window:{}};for(const file of ['data.js','youtube-data.js','youtube-lrc.js'])vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8'),ctx);
+ const {VAUNDY_SONGS:songs,VAUNDY_VIDEOS:videos,VAUNDY_LRC:lyrics,VAUNDY_LRC_SOURCES:sources}=ctx.window;
+ assert.deepEqual(Object.keys(sources).sort(),['hashire-sakamoto','kaiju','singularity','wasureru-mae-ni']);
+ assert.equal(songs.filter(s=>!lyrics[s.id]).length,4);
+ for(const [id,source] of Object.entries(sources)){
+  assert.equal(lyrics[id],undefined);assert.equal(source.apiUrl,'https://lrclib.net/api/get/'+source.id);
+  assert.ok(Math.abs(source.duration-videos[id].durationSeconds)<=2);
+  assert.equal(source.timingVerified,false);assert.ok(source.timestampCount>=20);
+ }
 });

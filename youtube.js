@@ -41,7 +41,7 @@
     for(const [i,cue] of cues.entries()) {
       const button=document.createElement('button');button.type='button';button.className='cue';button.dataset.cue=String(i);
       const time=document.createElement('span');time.className='cue-time';time.textContent=formatTime(cue.start+offset);
-      const words=document.createElement('span');const primary=document.createElement('span');primary.className='cue-primary';primary.lang='ja';
+      const words=document.createElement('span');const primary=document.createElement('span');primary.className='cue-primary';primary.lang=imported||bundled()?'ja':'zh-Hant';
       const segments=readingData()?.lines[cue.primary];
       if(segments&&segments.map(x=>x.text).join('')===cue.primary){
         for(const segment of segments){
@@ -53,8 +53,8 @@
       if(cue.secondary){const secondary=document.createElement('span');secondary.className='cue-secondary';secondary.textContent=cue.secondary;words.append(secondary);}
       button.append(time,words);$('timeline').append(button);
     }
-    $('content-kind').textContent=imported?`你匯入的 LRC · ${imported.name}`:bundled()?'日文／中文逐句歌詞 · 原創繁中翻譯':'原創導聆提示 · 非逐句歌詞';
-    $('timeline-hint').textContent=imported||bundled()?'點一句跳播，日文與中文一起亮起；時間不合可在下方微調。':'先用原創導聆提示體驗同步。提示時間按影片段落配置；匯入 LRC 才是逐句歌詞對應。';
+    $('content-kind').textContent=imported?`你匯入的 LRC · ${imported.name}`:bundled()?'日文／中文逐句歌詞 · 原創繁中翻譯':'字幕待補 · 目前顯示原創導聆';
+    $('timeline-hint').textContent=imported||bundled()?'點一句跳播，日文與中文一起亮起；時間不合可在下方微調。':'這首尚未匯入 LRC。下方提供下載來源；目前提示按影片段落配置，並非歌詞時間軸。';
     $('remove-lrc').disabled=!imported;
     const bilingual=cues.some(c=>c.secondary);$('translation').disabled=!bilingual;
     $('readings').disabled=!$('timeline').querySelector('ruby');
@@ -62,7 +62,7 @@
     const s=song(),marumaru=s.sources.find(x=>x.url.includes('marumaru')),b=bundled();
     $('lyrics-source-credit').textContent=imported?'目前顯示你匯入的 LRC，內容與翻譯以該檔案為準。':b?'日文歌詞／時間軸：你提供的 LRC（LRCLIB）；繁中：本站原創翻譯。':'本站原創中文導聆。';
     const readings=readingData();
-    $('lyrics-source-note').textContent=`${marumaru?'語意與翻譯風格參考：marumaru；參考頁翻譯署名請見原站。':'這首依你提供的日文原創翻譯，未取得 marumaru 中文對照。'}${readings?` 讀音參考：${readings.sourceName}${readings.supplementUrl?'，UtaTen 補充':''}${readings.editorialReadings?'；異體寫法另由本站補上一般讀音':''}。`:''}${!imported&&b?' 時間軸尚未逐句實聽校正，可依播放調整。':''}${s.id==='kaiju'?' marumaru 頁為原曲，播放與內建 LRC 為 replica 版。':''}`;
+    $('lyrics-source-note').textContent=`${!imported&&!b?'字幕待補；下載來源的 JSON 中，syncedLyrics 欄位是 LRC 文字，可存成 .lrc 後匯入。':marumaru?'語意與翻譯風格參考：marumaru；參考頁翻譯署名請見原站。':'這首依你提供的日文原創翻譯，未取得 marumaru 中文對照。'}${readings?` 讀音參考：${readings.sourceName}${readings.supplementUrl?'，UtaTen 補充':''}${readings.editorialReadings?'；異體寫法另由本站補上一般讀音':''}。`:''}${!imported&&b?' 時間軸尚未逐句實聽校正，可依播放調整。':''}${s.id==='kaiju'?' 播放已改為原版；請使用原版 LRC。':''}`;
   }
   function setActive(time,scroll=true) {
     const next=activeIndex(cues,time,offset);if(next===active)return;
@@ -121,13 +121,14 @@
     $('anime-open').href=`listen.html#song-${s.id}`;$('home-open').href=$('guide-open').href=`index.html#song-${s.id}`;
     document.title=`${s.name} · 歌詞跟唱`;$('youtube-open').href=v.source;
     $('previous').disabled=index===0;$('next').disabled=index===songs.length-1;
-    const b=bundled();
+    const b=bundled(),download=window.VAUNDY_LRC_SOURCES?.[s.id];
     $('sources').innerHTML=`<p><strong>影片：</strong>${e(v.title)}</p><p><strong>頻道：</strong>${e(v.channel)} · ${e(v.checkedAt)} 核對</p><p><a href="${e(v.source)}" target="_blank" rel="noopener noreferrer">官方 YouTube 影片 ↗</a></p>${b?`<p><strong>日文歌詞／時間軸：</strong>使用者提供的 ${e(b.providedFile)}（<a href="${e(b.sourceUrl)}" target="_blank" rel="noopener noreferrer">LRCLIB 原始紀錄 ↗</a>）</p><p><strong>中文：</strong>本站原創繁中翻譯；語意與風格參考 marumaru。時間軸尚未逐句實聽校正，請按播放微調。</p>`:'<p>內建文字為本站原創中文導聆。</p>'}`;
     const marumaru=s.sources.find(x=>x.url.includes('marumaru'));
     const original=s.sources.find(x=>x.kind==='original');
     $('marumaru-link').href=marumaru?.url||'https://www.marumaru-x.com/';
-    $('lyrics-source-link').href=marumaru?.url||original.url;
-    $('lyrics-source-link').textContent=marumaru?'在 marumaru 查看日文歌詞與中文翻譯 ↗':`日文原文：${original.name} ↗`;
+    $('lyrics-source-link').href=download?.apiUrl||marumaru?.url||original.url;
+    $('lyrics-source-link').textContent=download?'取得這首 LRC 來源（JSON）↗':marumaru?'在 marumaru 查看日文歌詞與中文翻譯 ↗':`日文原文：${original.name} ↗`;
+    if(download)$('sources').insertAdjacentHTML('beforeend',`<p><strong>字幕待補：</strong><a href="${e(download.sourceUrl)}" target="_blank" rel="noopener noreferrer">LRCLIB 紀錄 ↗</a> · <a href="${e(download.apiUrl)}" target="_blank" rel="noopener noreferrer">LRC 來源 JSON ↗</a>。曲長 ${e(String(Math.round(download.duration)))} 秒；待使用者提供，未逐句實聽校正。</p>`);
     clearLoop();restoreLRC();songList();setFollowing(true);$('time').textContent='00:00';$('duration').textContent='--:--';
   }
   function select(next) {

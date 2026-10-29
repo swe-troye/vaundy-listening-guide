@@ -4,16 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#182A3E">
-  <meta name="description" content="用 Vaundy 動漫人像與橫式章節，逐首走進 HORO 歌單的 24 首歌。歌曲大意、意境與來源，一頁一首慢慢翻。">
+  <meta name="description" content="用 Vaundy 動漫人像與橫式章節，逐首走進 On Tour Taiwan 歌單的 21 首歌。歌曲大意、意境與來源，一頁一首慢慢翻。">
   <title>動漫導聆 · Vaundy，在歌裡</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="listen.css?v=release-1">
   <link rel="preload" href="assets/vaundy-guide.svg" as="image" type="image/svg+xml">
-  <script src="data.js" defer></script>
+  <script src="data.js?v=on-tour-21" defer></script>
   <script src="core.js" defer></script>
-  <script src="previews.js?v=iphone-audio-2" defer></script>
-  <script src="player.js?v=iphone-audio-2" defer></script>
-  <script src="listen.js?v=release-1" defer></script>
+  <script src="previews.js?v=on-tour-21" defer></script>
+  <script src="player.js" defer></script>
+  <script src="listen.js" defer></script>
 </head>
 <body data-scene="sky" data-palette="mint">
   <a class="skip" href="#slide-title">跳到歌曲</a>
@@ -61,15 +61,15 @@
     </main>
     <section class="music-dock" aria-labelledby="music-title">
       <div id="spotify-player" class="preview-player"><div class="preview-heading"><strong id="preview-title">泣き地蔵</strong><span>約 30 秒試聽</span></div><audio id="preview-audio" controls playsinline preload="none" aria-label="歌曲試聽播放器"></audio></div>
-      <div class="music-meta"><a id="lyrics-open" class="lyrics-open" href="youtube.html#song-naki-jizo">完整播放・歌詞跟唱 →</a><button id="play-toggle" class="play-toggle" type="button" disabled>▶ 開始試聽</button><p id="playback-status" class="spotify-instruction" role="status">按一次開始試聽，翻頁時接著聽。</p><a id="spotify-open" class="spotify-open" href="https://open.spotify.com/track/22D3hqjQ8R7t29wp6Gy44W" target="_blank" rel="noopener noreferrer">在 Spotify 聽 ↗<span class="sr-only">（在新分頁開啟）</span></a></div>
+      <div class="music-meta"><a id="lyrics-open" class="lyrics-open" href="youtube.html#song-odoriko">完整播放・歌詞跟唱 →</a><button id="play-toggle" class="play-toggle" type="button" disabled>▶ 開始試聽</button><p id="playback-status" class="spotify-instruction" role="status">按一次開始試聽，翻頁時接著聽。</p><a id="spotify-open" class="spotify-open" href="https://open.spotify.com/track/7loLSr7JUn78pLHitHr89Z" target="_blank" rel="noopener noreferrer">在 Spotify 聽 ↗<span class="sr-only">（在新分頁開啟）</span></a></div>
     </section>
     <footer class="anime-footer">
-      <div class="journey"><p><strong id="journey-count">01</strong><span> / 24 首</span><span class="journey-caption">一首，一段風景。</span></p><div id="journey-track" class="journey-track" aria-hidden="true"></div></div>
+      <div class="journey"><p><strong id="journey-count">01</strong><span> / 21 首</span><span class="journey-caption">一首，一段風景。</span></p><div id="journey-track" class="journey-track" aria-hidden="true"></div></div>
       <p class="keyboard-hint"><kbd>←</kbd><kbd>→</kbd> 翻頁<span> · 也可以左右滑動</span></p>
       <div class="page-navigation"><button id="previous" class="previous-button" type="button" disabled><span aria-hidden="true">←</span><span>上一首</span></button><button id="next" class="next-button" type="button"><span id="next-label">下一首</span><span aria-hidden="true">→</span></button></div>
     </footer>
   </div>
-  <dialog id="chapter-dialog" class="chapter-dialog" aria-labelledby="chapters-title"><div class="dialog-heading"><div><p class="dialog-kicker">24 首，一起慢慢走</p><h2 id="chapters-title">選一段風景</h2></div><button id="chapter-close" class="dialog-close" type="button" aria-label="關閉章節目錄">✕</button></div><label class="chapter-search-label" for="chapter-search">找歌名</label><input id="chapter-search" class="chapter-search" type="search" placeholder="日文、英文或中文歌名" autocomplete="off"><nav id="chapter-list" class="chapter-list" aria-label="歌曲章節"></nav><p id="chapter-empty" class="chapter-empty" hidden>沒有符合的歌名，試試另一種語言。</p><p class="art-credit">以 Vaundy 為原型的原創 SVG 動漫人像。歌單依你提供的 Spotify 清單，非官方演出曲目。</p></dialog>
+  <dialog id="chapter-dialog" class="chapter-dialog" aria-labelledby="chapters-title"><div class="dialog-heading"><div><p class="dialog-kicker">21 首，一起慢慢走</p><h2 id="chapters-title">選一段風景</h2></div><button id="chapter-close" class="dialog-close" type="button" aria-label="關閉章節目錄">✕</button></div><label class="chapter-search-label" for="chapter-search">找歌名</label><input id="chapter-search" class="chapter-search" type="search" placeholder="日文、英文或中文歌名" autocomplete="off"><nav id="chapter-list" class="chapter-list" aria-label="歌曲章節"></nav><p id="chapter-empty" class="chapter-empty" hidden>沒有符合的歌名，試試另一種語言。</p><p class="art-credit">以 Vaundy 為原型的原創 SVG 動漫人像。歌單依你提供的 Spotify 清單，非官方演出曲目。</p></dialog>
   <dialog id="notes-dialog" class="notes-dialog" aria-labelledby="notes-title"><div class="dialog-heading"><div><p class="dialog-kicker">往歌裡，再走一點</p><h2 id="notes-title">泣き地蔵</h2></div><button id="notes-close" class="dialog-close" type="button" aria-label="關閉完整筆記">✕</button></div><div id="notes-content" class="notes-content"></div></dialog>
   <p id="slide-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
   <p id="anime-toast" class="anime-toast" role="status" hidden></p>

@@ -40,3 +40,13 @@ Spotify使用官方createController/loadEntity/play/pause與事件。初次按�
 本機匯入可覆蓋與還原內建歌詞；偏移按影片保存，ruby 開關不改文字與時間。影片時間前進才顯示播放中，播放受阻仍提示手動點播放。所有時間軸仍標記 timingVerified:false，總長核對不等於逐句實聽校正。
 
 驗證使用 core 單元測試、受控 YouTube fixture、閱讀頁與手機排版、真正 WebKit／Edge 播放。新增切換連結已驗證保留曲目及暫停音訊。research/ 與使用者 outputs/ 不加入提交；不提交原站 HTML、tokens 或 session 紀錄。
+
+## 2026-10-29 新歌單（現行）
+
+使用者要求改為 https://open.spotify.com/playlist/37i9dQZF1DXarlFLUSkBwQ ，Spotify「On Tour Taiwan: Vaundy」21 首。data.js、playlist-snapshot.json、previews.js 依公開 embed 完整順序與曲目 ID 更新；新增三首導聆與研究範圍；移除六首；怪獣改《strobo》原版。21 支 Topic 錄音，17 首既有內建 LRC 與讀音保留，3 新曲＋原版怪獣待使用者提供，不沿用 replica 時間軸。
+
+四首來源在 youtube-data.js 的 VAUNDY_LRC_SOURCES 與使用者 outputs/vaundy-on-tour-taiwan-lrc-sources.md/json。已查核時間軸排序、尾端與 Spotify／YouTube 長度，未逐句實聽驗證。跟唱頁直接提供 JSON 來源並明示字幕待補；syncedLyrics 才是 LRC 內容。輸出與 research 不提交。
+
+既有歌曲內部 ID 與 storage key 保留；移出歌單的歌曲被 sanitizeState 過濾。怪獣換影片 ID，使舊 replica 本機字幕／偏移不會混用。已更新各驗證腳本到 21 首與 17＋4 字幕狀態。
+
+新歌單驗證：14 項單元測試、建置、22 項閱讀頁瀏覽器檢查、21 項跟唱頁受控檢查通過。21 個試聽音訊確認 audio/mpeg；Edge 與 WebKit iPhone 模式實際試聽、自動換首及原生 ended 接續通過；Edge 實際 YouTube 播放、雙語跳播及原版怪獣換首通過。未實體 iPhone 或逐句實聽校正。

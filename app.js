@@ -8,7 +8,7 @@
   catch { loaded = {state: {saved: [], read: [], mode: 'slow'}, available: false}; }
   const state = loaded.state;
   const $ = id => document.getElementById(id);
-  const playlist = 'https://open.spotify.com/playlist/3EWsdNGyZ2tYVWndnJih0N';
+  const playlist = 'https://open.spotify.com/playlist/37i9dQZF1DXarlFLUSkBwQ';
   const icons = {
     heart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 5.8c-2-2.3-5.3-2.3-8.5.7-3.2-3-6.5-3-8.5-.7-2 2.3-1.5 5.7 1 8.2L12 21l7.5-7c2.5-2.5 3-5.9 1-8.2Z"/></svg>',
     check: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m7.5 12 3 3 6-6"/></svg>',
@@ -24,7 +24,7 @@
     catch { return false; }
   }
   function statusNote(s) {
-    if (s.verified) return `<p class="content-note verified-note"><span>${s.id === 'soramimi' ? '完整原文已讀' : '完整原文・中譯已讀'}</span>${e(s.research.checkedAt)} 核對；以下為原創大意與延伸聽法。</p>`;
+    if (s.verified) return `<p class="content-note verified-note"><span>${s.id === 'hashire-sakamoto' ? '完整原文已讀・中譯範圍另註' : '完整原文・中譯已讀'}</span>${e(s.research.checkedAt)} 核對；以下為原創大意與延伸聽法。</p>`;
     if (s.pending) return '<p class="content-note"><span>歌詞待核對</span>目前提供聆聽提問，完整解讀尚未補齊。</p>';
     if (s.partial) return '<p class="content-note"><span>開頭導聆</span>依可見歌詞預覽整理，完整敘事待核對。</p>';
     return '<p class="content-note"><span>背景已核對</span>已核對官方發行背景；未取得完整歌詞，以下僅提供背景與聆聽提示。</p>';
@@ -64,6 +64,7 @@
   $('song-nav').innerHTML = navHTML; $('mobile-song-nav').innerHTML = navHTML;
   function updateProgress() {
     $('progress-count').textContent = `${state.read.length} / ${songs.length}`;
+    $('reading-progress').max = songs.length;
     $('reading-progress').value = state.read.length;
     songs.forEach(s => document.querySelectorAll(`[data-nav="${s.id}"]`).forEach(a => {
       a.querySelector('.nav-read').textContent = state.read.includes(s.id) ? '✓' : '';
